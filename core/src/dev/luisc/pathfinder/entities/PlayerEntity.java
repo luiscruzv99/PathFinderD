@@ -43,10 +43,10 @@ public class PlayerEntity extends MovingEntity {
      */
     public void rotate(boolean direction){
 
-        if(direction && rotationSpeed>-10){
+        if(direction && rotationSpeed>-7){
             rotationSpeed-=2;
         }else{
-            if(rotationSpeed<10)rotationSpeed+=2;
+            if(rotationSpeed<7)rotationSpeed+=2;
         }
         acceleration+=0.1;
     }
@@ -78,7 +78,7 @@ public class PlayerEntity extends MovingEntity {
         rotationSpeed += -0.08 * rotationSpeed; //Decay rotation speed
 
         //Rotate the player, rotate less the quicker it goes
-        rotation += rotationSpeed / (Math.abs(acceleration + speedComponent / 5) * 0.05 + 1);
+        rotation += rotationSpeed / (Math.abs(acceleration + speedComponent / 4) * 0.05 + 1);
 
         if (rotation < 0) rotation += 360; //Keep rotation in bounds
 
