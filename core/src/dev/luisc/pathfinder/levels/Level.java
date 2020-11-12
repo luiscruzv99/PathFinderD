@@ -3,6 +3,7 @@ package dev.luisc.pathfinder.levels;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import dev.luisc.pathfinder.entities.Entity;
 import jdk.nashorn.api.scripting.JSObject;
 
 /**
@@ -17,6 +18,8 @@ public class Level {
     Polygon bounds; //Bounds of the level
     Texture background; //Background image of the level
     Vector2 startPoint; //Starting point of the player (May be unnecessary??)
+
+    Entity entity;
 
     boolean endState; //Indicator whether the level has been completed
     boolean failState; //Indicator whether the player has failed the level
@@ -56,4 +59,28 @@ public class Level {
 
     }
 
+
+    public void setBackground(Texture background) {
+        this.background = background;
+    }
+
+    public void setBounds(Polygon bounds) {
+        this.bounds = bounds;
+    }
+
+    public void setStartPoint(Vector2 startPoint) {
+        this.startPoint = startPoint;
+    }
+
+    public void setEntity(Entity entity) {
+        this.entity = entity;
+    }
+
+    public Entity getEntity() {
+        return entity;
+    }
+
+    public Polygon getBounds() {
+        return bounds;
+    }
 }

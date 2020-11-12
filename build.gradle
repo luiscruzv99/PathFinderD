@@ -12,7 +12,6 @@ buildscript {
     dependencies {
         classpath 'org.wisepersist:gwt-gradle-plugin:1.0.13'
         classpath 'org.gretty:gretty:3.0.2'
-        
 
     }
 }
@@ -86,6 +85,7 @@ project(":core") {
 
 
     dependencies {
+        implementation 'com.google.code.gson:gson:2.8.6'
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-ai:$aiVersion"
         api "com.badlogicgames.gdx:gdx-controllers:$gdxVersion"
