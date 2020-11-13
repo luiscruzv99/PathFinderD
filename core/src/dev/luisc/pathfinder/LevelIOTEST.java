@@ -40,7 +40,7 @@ public class LevelIOTEST {
         lev.setBackground(null);
 
         try(Writer writer = new FileWriter("core/assets/levels/levelTest.json")){
-            Gson gson = new GsonBuilder().create();
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(lev, writer);
         }catch(IOException e){
             System.out.println("ERROR");
