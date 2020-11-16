@@ -16,13 +16,13 @@ public class MovingEntity extends Entity {
 
     /**
      * Create the moving entity
-     * @param sprite, its sprite
+     * @param spritePath, its sprite
      * @param polygon, its collision box
      * @param pos, its initial position
      * @param vel, its speed
      */
-    public MovingEntity(Sprite sprite, Polygon polygon, Vector2 pos, Vector2 vel){
-        super(sprite, polygon, pos);
+    public MovingEntity(String spritePath, Polygon polygon, Vector2 pos, Vector2 vel){
+        super(spritePath, polygon, pos);
         this.vel = vel;
     }
 

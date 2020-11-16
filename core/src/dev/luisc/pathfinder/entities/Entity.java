@@ -1,5 +1,6 @@
 package dev.luisc.pathfinder.entities;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
@@ -15,26 +16,36 @@ public class Entity {
     Sprite sprite; //Sprite of the entity
     Polygon collisionBox; //Collision box
     Vector2 pos; //Position
+    String spritePath;
 
     //Empty private constructor to prevent from doing super()
     private Entity(){}
 
     /**
      * Create the entity
-     * @param sprite, its sprite
+     * @param spritePath, its sprite
      * @param polygon, its collision box
      * @param pos, its position
      */
-    public Entity(Sprite sprite, Polygon polygon, Vector2 pos){
-        this.sprite=sprite;
+    public Entity(String spritePath, Polygon polygon, Vector2 pos){
+        this.spritePath = spritePath;
         this.collisionBox=polygon;
         this.pos=pos;
         collisionBox.setPosition(pos.x, pos.y);
+        postDeSerialize();
     }
 
     /**
      * Getters for the attributes
      */
+
+    public void postDeSerialize(){
+        sprite = new Sprite(new Texture(spritePath));
+    }
+
+    public void preSerialize(){
+        sprite = null;
+    }
 
     public Sprite getSprite() {
         return sprite;

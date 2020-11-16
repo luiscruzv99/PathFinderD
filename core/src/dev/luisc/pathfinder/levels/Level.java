@@ -18,6 +18,7 @@ public class Level {
     Polygon bounds; //Bounds of the level
     Texture background; //Background image of the level
     Vector2 startPoint; //Starting point of the player (May be unnecessary??)
+    String backgroundPath;
 
     Entity entity;
 
@@ -59,9 +60,18 @@ public class Level {
 
     }
 
+    public void postDeSerialize(){
+        background = new Texture(backgroundPath);
+        entity.postDeSerialize();
+    }
 
-    public void setBackground(Texture background) {
-        this.background = background;
+    public void preSerialize(){
+        background = null;
+        entity.preSerialize();
+    }
+
+    public void setBackgroundPath(String backgroundPath) {
+        this.backgroundPath = backgroundPath;
     }
 
     public void setBounds(Polygon bounds) {
@@ -82,5 +92,9 @@ public class Level {
 
     public Polygon getBounds() {
         return bounds;
+    }
+
+    public Texture getBackground(){
+        return background;
     }
 }

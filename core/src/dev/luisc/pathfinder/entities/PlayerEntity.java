@@ -1,6 +1,5 @@
 package dev.luisc.pathfinder.entities;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
@@ -24,7 +23,7 @@ public class PlayerEntity extends MovingEntity {
      */
     public PlayerEntity(Vector2 pos) {
 
-        super(null , new Polygon(new float[]{
+        super("playerTest.png" , new Polygon(new float[]{
                 0,0,
                 0,40,
                 50,20}),pos, new Vector2(0,0));
@@ -103,5 +102,9 @@ public class PlayerEntity extends MovingEntity {
         //Move the collision of the player and set its rotation
         collisionBox.setRotation(rotation);
         collisionBox.setPosition(pos.x, pos.y);
+    }
+
+    public float getRotation(){
+        return rotation;
     }
 }

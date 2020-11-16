@@ -11,17 +11,19 @@ import java.io.*;
 
 public class LevelIOTEST {
 
-    public static void loadTest(){
+    public static Level loadTest(){
 
-        Level lev;
+        Level lev = new Level(null);
 
         try(Reader reader = new FileReader("core/assets/levels/levelTest.json")){
             Gson gson = new GsonBuilder().create();
             lev = gson.fromJson(reader, Level.class);
+            lev.postDeSerialize();
+
         }catch(IOException e){
             System.out.println("ERROR");
         }
-
+        return lev;
     }
 
     public static void saveTest(){
@@ -33,11 +35,12 @@ public class LevelIOTEST {
          * deserialization.
          */
         Level lev = new Level(null);
-        Entity ent = new Entity(null, new Polygon(new float[]{0,0,20,20,0,40}), new Vector2(100,100));
+        Entity ent = new Entity("playerTest.png", new Polygon(new float[]{0,0,20,20,0,40}), new Vector2(100,100));
         lev.setEntity(ent);
         lev.setStartPoint(new Vector2(50,50));
         lev.setBounds(new Polygon(new float[]{0,0,0,50,50,50,50,0}));
-        lev.setBackground(null);
+        lev.setBackgroundPath("bgTest.png");
+        lev.preSerialize();
 
         try(Writer writer = new FileWriter("core/assets/levels/levelTest.json")){
             Gson gson = new GsonBuilder().setPrettyPrinting().create();

@@ -22,7 +22,7 @@ public class PathfinderD extends ApplicationAdapter {
 	SpriteBatch batch;
 	PlayerEntity playerTest;
 	ShapeRenderer shapeRenderer;
-
+	Level levelTest;
 	OrthographicCamera camera;
 
 
@@ -30,15 +30,16 @@ public class PathfinderD extends ApplicationAdapter {
 
 	@Override
 	public void create () {
+
 		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 		playerTest = new PlayerEntity(new Vector2(100,100));
-
+		levelTest = LevelIOTEST.loadTest();
 		shapeRenderer = new ShapeRenderer();
 
-		LevelIOTEST.saveTest();
+
 
 	}
 
@@ -62,6 +63,14 @@ public class PathfinderD extends ApplicationAdapter {
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))playerTest.boost();
 
 		playerTest.move();
+
+
+
+		batch.begin();
+		batch.draw(levelTest.getBackground(), 0,0);
+		batch.draw(levelTest.getEntity().getSprite(), levelTest.getEntity().getPos().x, levelTest.getEntity().getPos().y);
+		batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,0,0,50,50,1,1,playerTest.getRotation());
+		batch.end();
 
 		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
 		shapeRenderer.setColor(0, 0, 0, 0.0f);

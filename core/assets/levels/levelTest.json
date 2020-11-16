@@ -23,6 +23,7 @@
     "x": 50.0,
     "y": 50.0
   },
+  "backgroundPath": "bgTest.png",
   "entity": {
     "collisionBox": {
       "localVertices": [
@@ -45,7 +46,8 @@
     "pos": {
       "x": 100.0,
       "y": 100.0
-    }
+    },
+    "spritePath": "playerTest.png"
   },
   "endState": false,
   "failState": false
