@@ -3,11 +3,17 @@
     "localVertices": [
       0.0,
       0.0,
-      0.0,
+      25.0,
+      500.0,
       50.0,
-      50.0,
-      50.0,
-      50.0,
+      500.0,
+      500.0,
+      1500.0,
+      1500.0,
+      2000.0,
+      2500.0,
+      500.0,
+      3000.0,
       0.0
     ],
     "x": 0.0,
@@ -24,31 +30,258 @@
     "y": 50.0
   },
   "backgroundPath": "bgTest.png",
-  "entity": {
-    "collisionBox": {
-      "localVertices": [
-        0.0,
-        0.0,
-        20.0,
-        20.0,
-        0.0,
-        40.0
-      ],
-      "x": 100.0,
-      "y": 100.0,
-      "originX": 0.0,
-      "originY": 0.0,
-      "rotation": 0.0,
-      "scaleX": 1.0,
-      "scaleY": 1.0,
-      "dirty": true
+  "entities": [
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 0.0,
+        "y": 30.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 0.0,
+        "y": 30.0
+      },
+      "spritePath": "playerTest.png"
     },
-    "pos": {
-      "x": 100.0,
-      "y": 100.0
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 300.0,
+        "y": 280.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 300.0,
+        "y": 280.0
+      },
+      "spritePath": "playerTest.png"
     },
-    "spritePath": "playerTest.png"
-  },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 600.0,
+        "y": 530.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 600.0,
+        "y": 530.0
+      },
+      "spritePath": "playerTest.png"
+    },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 900.0,
+        "y": 780.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 900.0,
+        "y": 780.0
+      },
+      "spritePath": "playerTest.png"
+    },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 1200.0,
+        "y": 1030.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 1200.0,
+        "y": 1030.0
+      },
+      "spritePath": "playerTest.png"
+    },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 1500.0,
+        "y": 1280.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 1500.0,
+        "y": 1280.0
+      },
+      "spritePath": "playerTest.png"
+    },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 1800.0,
+        "y": 1530.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 1800.0,
+        "y": 1530.0
+      },
+      "spritePath": "playerTest.png"
+    },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 2100.0,
+        "y": 1780.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 2100.0,
+        "y": 1780.0
+      },
+      "spritePath": "playerTest.png"
+    },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 2400.0,
+        "y": 2030.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 2400.0,
+        "y": 2030.0
+      },
+      "spritePath": "playerTest.png"
+    },
+    {
+      "collisionBox": {
+        "localVertices": [
+          0.0,
+          0.0,
+          10.0,
+          10.0,
+          0.0,
+          10.0
+        ],
+        "x": 2700.0,
+        "y": 2280.0,
+        "originX": 0.0,
+        "originY": 0.0,
+        "rotation": 0.0,
+        "scaleX": 1.0,
+        "scaleY": 1.0,
+        "dirty": true
+      },
+      "pos": {
+        "x": 2700.0,
+        "y": 2280.0
+      },
+      "spritePath": "playerTest.png"
+    }
+  ],
   "endState": false,
   "failState": false
 }

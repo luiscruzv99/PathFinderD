@@ -19,9 +19,7 @@ import dev.luisc.pathfinder.levels.Level;
 import java.io.*;
 
 public class PathfinderD extends ApplicationAdapter {
-	SpriteBatch batch;
-	PlayerEntity playerTest;
-	ShapeRenderer shapeRenderer;
+
 	Level levelTest;
 	OrthographicCamera camera;
 
@@ -31,15 +29,9 @@ public class PathfinderD extends ApplicationAdapter {
 	@Override
 	public void create () {
 
-		batch = new SpriteBatch();
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-
-		playerTest = new PlayerEntity(new Vector2(100,100));
-		levelTest = LevelIOTEST.loadTest();
-		shapeRenderer = new ShapeRenderer();
-
-
+		levelTest= LevelIOTEST.loadTest();
 
 	}
 
@@ -49,35 +41,24 @@ public class PathfinderD extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			playerTest.rotate(false);
+			levelTest.playerTest.rotate(false);
 		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			playerTest.rotate(true);
+			levelTest.playerTest.rotate(true);
 		}
 
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
-			playerTest.accelerate(true);
+			levelTest.playerTest.accelerate(true);
 		}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-			playerTest.accelerate(false);
+			levelTest.playerTest.accelerate(false);
 		}
 
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))playerTest.boost();
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.playerTest.boost();
 
-		playerTest.move();
+		levelTest.playerTest.move();
 
-
-
-		batch.begin();
-		batch.draw(levelTest.getBackground(), 0,0);
-		batch.draw(levelTest.getEntity().getSprite(), levelTest.getEntity().getPos().x, levelTest.getEntity().getPos().y);
-		batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,0,0,50,50,1,1,playerTest.getRotation());
-		batch.end();
-
-		shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-		shapeRenderer.setColor(0, 0, 0, 0.0f);
-
-		shapeRenderer.polygon(playerTest.getCollisionBox().getTransformedVertices());
-		shapeRenderer.end();
-
+		//Lo que va antes se renderiza por debajo (Uso para paralax?????)
+		levelTest.render();
+		levelTest.debugRender();
 
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
@@ -86,6 +67,6 @@ public class PathfinderD extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		batch.dispose();
+		levelTest.cleanUp();
 	}
 }
