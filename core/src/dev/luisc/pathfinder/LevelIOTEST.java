@@ -8,6 +8,7 @@ import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.levels.Level;
 
 import java.io.*;
+import java.util.ArrayList;
 
 public class LevelIOTEST {
 
@@ -35,10 +36,13 @@ public class LevelIOTEST {
          * deserialization.
          */
         Level lev = new Level(null);
-        Entity ent = new Entity("playerTest.png", new Polygon(new float[]{0,0,20,20,0,40}), new Vector2(100,100));
-        lev.setEntity(ent);
+        ArrayList<Entity> entities= new ArrayList<>();
+        for(int i=0; i<10; i++){
+            entities.add(new Entity("playerTest.png",new Polygon(new float[]{0,0, 10,10, 0,10}), new Vector2(i*300, i*250+30)));
+        }
+        lev.setEntities(entities);
         lev.setStartPoint(new Vector2(50,50));
-        lev.setBounds(new Polygon(new float[]{0,0,0,50,50,50,50,0}));
+        lev.setBounds(new Polygon(new float[]{0,0,25,500,50,500,500,1500,1500,2000,2500,500,3000,0}));
         lev.setBackgroundPath("bgTest.png");
         lev.preSerialize();
 

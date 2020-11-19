@@ -29,7 +29,6 @@ public class PlayerEntity extends MovingEntity {
                 50,20}),pos, new Vector2(0,0));
 
         collisionBox.setOrigin(30,20);
-
         this.speedComponent = 0;
         this.acceleration = 0;
         this.rotation = 0;

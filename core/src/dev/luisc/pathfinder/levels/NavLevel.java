@@ -1,5 +1,6 @@
 package dev.luisc.pathfinder.levels;
 
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
 import jdk.nashorn.api.scripting.JSObject;
@@ -34,7 +35,7 @@ public class NavLevel extends Level {
 
     @Override
     public boolean render() {
-        return true;
+        return endState;
     }
 
     /**
