@@ -55,6 +55,11 @@ public class PathfinderD extends ApplicationAdapter {
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.playerTest.boost();
 
 		levelTest.playerTest.move();
+		camera.position.set(levelTest.playerTest.getPos(), 0); // Maybe add dynamic zoom based on speed??
+		camera.update();
+
+		levelTest.batch.setProjectionMatrix(camera.combined);
+		levelTest.shapeRenderer.setProjectionMatrix(camera.combined);
 
 		//Lo que va antes se renderiza por debajo (Uso para paralax?????)
 		levelTest.render();

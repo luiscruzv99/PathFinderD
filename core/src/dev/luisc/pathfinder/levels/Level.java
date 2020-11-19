@@ -25,9 +25,9 @@ public class Level {
     Texture background; //Background image of the level
     Vector2 startPoint; //Starting point of the player (May be unnecessary??)
     String backgroundPath;
-    SpriteBatch batch;
+    public SpriteBatch batch;
 
-    ShapeRenderer shapeRenderer;
+    public ShapeRenderer shapeRenderer;
     ArrayList<Entity> entities;
     public PlayerEntity playerTest;
 

@@ -14,7 +14,7 @@ public class PlayerEntity extends MovingEntity {
     float rotation; //Rotation of the player
     float rotationSpeed; //Speed at which the player rotates
 
-    float speedComponent; //Total speed of the player
+    public float speedComponent; //Total speed of the player
     float acceleration; //Acceleration of the player, always in the direction the polygon is pointing
 
     /**
