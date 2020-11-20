@@ -54,10 +54,10 @@ public class PlayerEntity extends MovingEntity {
      * @param direction
      */
     public void accelerate(boolean direction){
-        if(direction && speedComponent<25){
-            acceleration+=1;
+        if(direction && speedComponent<10){
+            acceleration+=0.5;
         }else{
-            if(speedComponent>-10)acceleration-=0.25;
+            if(speedComponent>-7)acceleration-=0.25;
         }
     }
 
@@ -65,7 +65,7 @@ public class PlayerEntity extends MovingEntity {
      * Boost the player's speed for a short time
      */
     public void boost(){
-        if(speedComponent<15) acceleration=50;
+        if(speedComponent<5) acceleration=50;
     }
 
     /**
@@ -76,14 +76,14 @@ public class PlayerEntity extends MovingEntity {
         rotationSpeed += -0.08 * rotationSpeed; //Decay rotation speed
 
         //Rotate the player, rotate less the quicker it goes
-        rotation += rotationSpeed / (Math.abs(acceleration + speedComponent / 4) * 0.05 + 1);
+        rotation += rotationSpeed / (Math.abs(acceleration + speedComponent) * 0.05 + 1);
 
         if (rotation < 0) rotation += 360; //Keep rotation in bounds
 
         acceleration += -0.5 * acceleration; //Decay acceleration
 
         //Accelerate if top speed is not reached
-        if (speedComponent > -35 && speedComponent < 35) speedComponent += acceleration;
+        if (speedComponent > -7 && speedComponent < 15) speedComponent += acceleration;
         speedComponent += -0.025 * speedComponent; //Decay speed
 
         //Calculate the speed of each component, taking into account the rotation
@@ -109,7 +109,10 @@ public class PlayerEntity extends MovingEntity {
 
     @Override
     public void levelCollision(){
+        //TODO: Check if looking direction == direction of collision of level
         if(hitPoints>0) hitPoints--;
         speedComponent=speedComponent*(-1);
+        vel.x=-1*vel.x;
+        vel.y=-1*vel.y;
     }
 }

@@ -17,7 +17,7 @@ public class Entity {
     Polygon collisionBox; //Collision box
     Vector2 pos; //Position
     String spritePath;
-    int hitPoints;
+    int hitPoints=2;
 
     //Empty private constructor to prevent from doing super()
     private Entity(){}
@@ -33,7 +33,7 @@ public class Entity {
         this.collisionBox=polygon;
         this.pos=pos;
         collisionBox.setPosition(pos.x, pos.y);
-        hitPoints=2;
+        //hitPoints=2;
         postDeSerialize();
     }
 
@@ -71,4 +71,8 @@ public class Entity {
     }
 
     public void levelCollision(){}
+
+    public void setHitPoints(int hitPoints) {
+        this.hitPoints = hitPoints;
+    }
 }

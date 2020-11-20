@@ -76,6 +76,13 @@ public class Level {
     }
 
     private void checkCollisions(){
+
+        for(Entity entity: entities){
+            for(Entity entity1: entities){
+                if(!entity.equals(entity1)) CollisionHandler.isCollidingEntity(entity, entity1);
+            }
+        }
+
         for(Entity e: entities){
             CollisionHandler.isCollidingEntity(playerTest, e);
         }
