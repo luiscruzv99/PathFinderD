@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import dev.luisc.pathfinder.collisions.CollisionHandler;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
 import jdk.nashorn.api.scripting.JSObject;
@@ -50,10 +51,13 @@ public class Level {
      * @return whether the level has been completed, thus ending the render
      */
     public boolean render() {
-
+        checkCollisions();
+        aliveEntities();
         batch.begin();
         batch.draw(background, 0,0);
-        for(Entity entity: entities)batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y);
+        for(Entity entity: entities){
+            batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y);
+        }
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
         batch.end();
@@ -69,6 +73,26 @@ public class Level {
         shapeRenderer.polygon(bounds.getTransformedVertices());
         shapeRenderer.end();
         return shapeRenderer;
+    }
+
+    private void checkCollisions(){
+        for(Entity e: entities){
+            CollisionHandler.isCollidingEntity(playerTest, e);
+        }
+        CollisionHandler.isCollidingLevel(playerTest, bounds);
+    }
+
+    private void aliveEntities(){
+        ArrayList<Entity> deadEntities = new ArrayList<>();
+
+        for(Entity entity: entities) {
+            if (!entity.alive()) {
+                System.out.println("Entidad: " + entities.indexOf(entity) + "murio");
+                deadEntities.add(entity);
+            }
+        }
+
+        for(Entity e: deadEntities)entities.remove(e);
     }
 
     public void cleanUp(){batch.dispose();}

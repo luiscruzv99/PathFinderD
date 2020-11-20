@@ -106,4 +106,10 @@ public class PlayerEntity extends MovingEntity {
     public float getRotation(){
         return rotation;
     }
+
+    @Override
+    public void levelCollision(){
+        if(hitPoints>0) hitPoints--;
+        speedComponent=speedComponent*(-1);
+    }
 }
