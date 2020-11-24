@@ -7,6 +7,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.collisions.CollisionHandler;
 import dev.luisc.pathfinder.entities.Entity;
+import dev.luisc.pathfinder.entities.MovingEntity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
 import jdk.nashorn.api.scripting.JSObject;
 
@@ -53,10 +54,14 @@ public class Level {
     public boolean render() {
         checkCollisions();
         aliveEntities();
+        playerTest.move();
         batch.begin();
         batch.draw(background, 0,0);
         for(Entity entity: entities){
-            batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y);
+            batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
+                    entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
+                    entity.getCollisionBox().getRotation());
+            entity.move();
         }
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
@@ -104,6 +109,21 @@ public class Level {
         if(entities.isEmpty()) endCondition();
 
         if(!playerTest.alive()) failCondition();
+    }
+
+    public void playerShoot(){
+        float direction = playerTest.getRotation();
+        float speed = playerTest.speedComponent+5;
+        Vector2 pos =  new Vector2(playerTest.getPos());
+        pos.x += playerTest.getSprite().getWidth()/2;
+        pos.y += playerTest.getSprite().getHeight();
+        Vector2 dir = new Vector2((float)Math.cos(Math.toRadians(direction))*speed,
+                (float)Math.sin(Math.toRadians(direction))*speed);
+
+        //TODO: Create poolObject of projectiles to ease this part
+        float[] col = new float[]{0,0,0,10,4,10,4,0};
+        MovingEntity projectile = new MovingEntity("Projectile.png", new Polygon(col),pos, dir);
+        entities.add(projectile);
     }
 
     public void cleanUp(){batch.dispose();}

@@ -55,7 +55,8 @@ public class PathfinderD extends ApplicationAdapter {
 
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.playerTest.boost();
 
-		levelTest.playerTest.move();
+		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) levelTest.playerShoot();
+
 		camera.position.set(levelTest.playerTest.getPos(), 0); // Maybe add dynamic zoom based on speed??
 		camera.update();
 

@@ -72,6 +72,8 @@ public class Entity {
 
     public void levelCollision(){}
 
+    public void move(){}
+
     public void setHitPoints(int hitPoints) {
         this.hitPoints = hitPoints;
     }

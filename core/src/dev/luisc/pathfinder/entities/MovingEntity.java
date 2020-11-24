@@ -24,11 +24,13 @@ public class MovingEntity extends Entity {
     public MovingEntity(String spritePath, Polygon polygon, Vector2 pos, Vector2 vel){
         super(spritePath, polygon, pos);
         this.vel = vel;
+        collisionBox.rotate(vel.angle()-90);
     }
 
     /**
      * Move the entity and its collision
      */
+    @Override
     public void move(){
         pos.x += vel.x;
         pos.y += vel.y;
