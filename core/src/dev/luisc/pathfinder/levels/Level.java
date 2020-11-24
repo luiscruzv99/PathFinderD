@@ -61,7 +61,7 @@ public class Level {
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
         batch.end();
-        return endState;
+        return endState || failState;
     }
 
     public ShapeRenderer debugRender(){
@@ -100,6 +100,10 @@ public class Level {
         }
 
         for(Entity e: deadEntities)entities.remove(e);
+
+        if(entities.isEmpty()) endCondition();
+
+        if(!playerTest.alive()) failCondition();
     }
 
     public void cleanUp(){batch.dispose();}
@@ -109,7 +113,7 @@ public class Level {
      * and changes the endState variable
      */
     private void endCondition() {
-
+        endState = true;
     }
 
     /**
@@ -117,14 +121,14 @@ public class Level {
      * changes the failState variable
      */
     private void failCondition() {
-
+        failState = true;
     }
 
     public void postDeSerialize(){
         background = new Texture(backgroundPath);
         for(Entity entity: entities)entity.postDeSerialize();
         batch = new SpriteBatch();
-        playerTest = new PlayerEntity(new Vector2(100,100));
+        playerTest = new PlayerEntity(startPoint);
         shapeRenderer = new ShapeRenderer();
     }
 

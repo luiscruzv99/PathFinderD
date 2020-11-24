@@ -38,11 +38,12 @@ public class LevelIOTEST {
         Level lev = new Level(null);
         ArrayList<Entity> entities= new ArrayList<>();
         for(int i=0; i<10; i++){
-            entities.add(new Entity("playerTest.png",new Polygon(new float[]{0,0, 10,10, 0,10}), new Vector2(i*300, i*250+30)));
+            entities.add(new Entity("playerTest.png",new Polygon(new float[]{ 0,0,0,40,50,20}),
+                    new Vector2(i*100+2500, i*100*(float)Math.random()+400)));
         }
         lev.setEntities(entities);
-        lev.setStartPoint(new Vector2(50,50));
-        lev.setBounds(new Polygon(new float[]{0,0,25,500,50,500,500,1500,1500,2000,2500,500,3000,0}));
+        lev.setStartPoint(new Vector2(1000,1000));
+        lev.setBounds(new Polygon(new float[]{800,400,800,4600,4200,4600,4200,400}));
         lev.setBackgroundPath("bgTest.png");
         lev.preSerialize();
 

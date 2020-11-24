@@ -31,6 +31,7 @@ public class PathfinderD extends ApplicationAdapter {
 
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+		LevelIOTEST.saveTest();
 		levelTest= LevelIOTEST.loadTest();
 
 	}
@@ -62,11 +63,15 @@ public class PathfinderD extends ApplicationAdapter {
 		levelTest.shapeRenderer.setProjectionMatrix(camera.combined);
 
 		//Lo que va antes se renderiza por debajo (Uso para paralax?????)
-		levelTest.render();
+		if(levelTest.render()){
+			levelTest = LevelIOTEST.loadTest();
+			System.out.println("Recargando nivel, el jugador o ha muerto o ha matado a las entidades");
+		};
 		levelTest.debugRender();
 
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
+
 
 	}
 	

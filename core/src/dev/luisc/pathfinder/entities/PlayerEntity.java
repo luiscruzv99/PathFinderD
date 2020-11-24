@@ -109,7 +109,7 @@ public class PlayerEntity extends MovingEntity {
 
     @Override
     public void levelCollision(){
-        //TODO: Check if looking direction == direction of collision of level
+        //TODO: Check if looking direction == direction of collision of level (or not heheheheheh)
         if(hitPoints>0) hitPoints--;
         speedComponent=speedComponent*(-1);
         vel.x=-1*vel.x;

@@ -16,7 +16,7 @@ public class CollisionHandler {
     }
 
     public static void isCollidingLevel(Entity e, Polygon p){
-        if(Intersector.overlapConvexPolygons(e.getCollisionBox(),p)){
+        if(!Intersector.overlapConvexPolygons(e.getCollisionBox(),p)){
             e.levelCollision();
         }
     }
