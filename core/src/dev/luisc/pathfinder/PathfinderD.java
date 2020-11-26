@@ -57,6 +57,7 @@ public class PathfinderD extends ApplicationAdapter {
 
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) levelTest.playerShoot();
 
+		camera.zoom =1+ (levelTest.playerTest.speedComponent)/10;
 		camera.position.set(levelTest.playerTest.getPos(), 0); // Maybe add dynamic zoom based on speed??
 		camera.update();
 
@@ -65,6 +66,7 @@ public class PathfinderD extends ApplicationAdapter {
 
 		//Lo que va antes se renderiza por debajo (Uso para paralax?????)
 		if(levelTest.render()){
+			levelTest.cleanUp();
 			levelTest = LevelIOTEST.loadTest();
 			System.out.println("Recargando nivel, el jugador o ha muerto o ha matado a las entidades");
 		};
