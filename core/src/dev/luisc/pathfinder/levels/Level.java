@@ -39,11 +39,9 @@ public class Level {
 
     /**
      * Populates the level with the information extracted from the JSON file
-     *
-     * @param levelInfo, the information of the level
+     * TODO: add all the info of the level to make them easier to create
      */
-    public Level(JSObject levelInfo) {
-        //TODO: Load the level data from a JSON file
+    public Level() {
     }
 
     /**
@@ -55,6 +53,7 @@ public class Level {
         checkCollisions();
         aliveEntities();
         playerTest.move();
+
         batch.begin();
         batch.draw(background, 0,0);
         for(Entity entity: entities){
@@ -66,6 +65,7 @@ public class Level {
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
         batch.end();
+
         return endState || failState;
     }
 
@@ -76,6 +76,7 @@ public class Level {
         shapeRenderer.polygon(playerTest.getCollisionBox().getTransformedVertices());
         for(Entity entity: entities) shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
         shapeRenderer.polygon(bounds.getTransformedVertices());
+
         shapeRenderer.end();
         return shapeRenderer;
     }
@@ -91,6 +92,7 @@ public class Level {
         for(Entity e: entities){
             CollisionHandler.isCollidingEntity(playerTest, e);
         }
+
         CollisionHandler.isCollidingLevel(playerTest, bounds);
     }
 
@@ -106,22 +108,20 @@ public class Level {
 
         for(Entity e: deadEntities)entities.remove(e);
 
-        if(entities.isEmpty()) endCondition();
-
         if(!playerTest.alive()) failCondition();
     }
 
     public void playerShoot(){
+
         float direction = playerTest.getRotation();
-        float speed = playerTest.speedComponent+5;
-        Vector2 pos =  new Vector2(playerTest.getPos());
-        pos.x += playerTest.getSprite().getWidth()/2;
-        pos.y += playerTest.getSprite().getHeight();
+        float speed = 50;
+        Vector2 pos =  new Vector2();
+        pos.x = playerTest.getCollisionBox().getTransformedVertices()[4]+5*(float)Math.cos(Math.toRadians(direction));
+        pos.y = playerTest.getCollisionBox().getTransformedVertices()[5]+5*(float)Math.sin(Math.toRadians(direction));
         Vector2 dir = new Vector2((float)Math.cos(Math.toRadians(direction))*speed,
                 (float)Math.sin(Math.toRadians(direction))*speed);
 
-        //TODO: Create poolObject of projectiles to ease this part
-        float[] col = new float[]{0,0,0,10,4,10,4,0};
+        float[] col = new float[]{4,10,4,0,0,0,0,10};
         MovingEntity projectile = new MovingEntity("Projectile.png", new Polygon(col),pos, dir);
         entities.add(projectile);
     }

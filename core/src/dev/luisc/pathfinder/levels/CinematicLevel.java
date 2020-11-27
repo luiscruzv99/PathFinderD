@@ -26,8 +26,8 @@ public class CinematicLevel extends Level {
     //Don't like this one...
     ArrayList<ArrayList<Vector2>> movements; //Movements of the entities within the cinematic
 
-    public CinematicLevel(JSObject levelInfo) {
-        super(levelInfo);
+    public CinematicLevel() {
+        super();
     }
 
     @Override

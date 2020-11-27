@@ -5,26 +5,12 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.Sprite;
-import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Polygon;
-import com.badlogic.gdx.math.Vector2;
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import dev.luisc.pathfinder.entities.*;
 import dev.luisc.pathfinder.levels.Level;
-
-import java.io.*;
 
 public class PathfinderD extends ApplicationAdapter {
 
 	Level levelTest;
 	OrthographicCamera camera;
-
-
-
 
 	@Override
 	public void create () {
@@ -55,9 +41,9 @@ public class PathfinderD extends ApplicationAdapter {
 
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.playerTest.boost();
 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) levelTest.playerShoot();
+		if(Gdx.input.isKeyPressed(Input.Keys.Z)) levelTest.playerShoot();
 
-		camera.zoom =1+ (levelTest.playerTest.speedComponent)/10;
+		camera.zoom =1+ (levelTest.playerTest.speedComponent)/50;
 		camera.position.set(levelTest.playerTest.getPos(), 0); // Maybe add dynamic zoom based on speed??
 		camera.update();
 

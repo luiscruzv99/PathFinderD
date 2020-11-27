@@ -23,8 +23,8 @@ public class ChaseLevel extends Level {
      * Creates the chase level, with all the info
      * @param levelInfo, the info of the level
      */
-    public ChaseLevel(JSObject levelInfo) {
-        super(levelInfo);
+    public ChaseLevel() {
+        super();
     }
 
     @Override

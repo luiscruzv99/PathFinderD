@@ -22,8 +22,8 @@ public class AttackLevel extends NavLevel {
      * Creates the attack level, with all the info
      * @param levelInfo, the info of the level
      */
-    public AttackLevel(JSObject levelInfo) {
-        super(levelInfo);
+    public AttackLevel() {
+        super();
     }
 
     @Override

@@ -29,8 +29,8 @@ public class NavLevel extends Level {
      * Creates the Navigation Level with its info
      * @param levelInfo the info of the level
      */
-    public NavLevel(JSObject levelInfo) {
-        super(levelInfo);
+    public NavLevel() {
+        super();
     }
 
     @Override

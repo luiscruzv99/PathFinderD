@@ -14,7 +14,7 @@ public class LevelIOTEST {
 
     public static Level loadTest(){
 
-        Level lev = new Level(null);
+        Level lev = new Level();
 
         try(Reader reader = new FileReader("core/assets/levels/levelTest.json")){
             Gson gson = new GsonBuilder().create();
@@ -35,7 +35,7 @@ public class LevelIOTEST {
          * the path of the texture, which will have to be loaded after the object's
          * deserialization.
          */
-        Level lev = new Level(null);
+        Level lev = new Level();
         ArrayList<Entity> entities= new ArrayList<>();
         for(int i=0; i<10; i++){
             entities.add(new Entity("playerTest.png",new Polygon(new float[]{ 0,0,0,40,50,20}),
