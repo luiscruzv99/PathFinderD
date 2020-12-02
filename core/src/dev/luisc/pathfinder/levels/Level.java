@@ -6,13 +6,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.collisions.CollisionHandler;
-import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.MovingEntity;
+import dev.luisc.pathfinder.entities.ProjectilePool;
+import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
-import jdk.nashorn.api.scripting.JSObject;
 
 import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Class that contains all the information about a level,
@@ -23,25 +22,34 @@ import java.util.List;
  */
 public class Level {
 
-    Polygon bounds; //Bounds of the level
-    Texture background; //Background image of the level
-    Vector2 startPoint; //Starting point of the player (May be unnecessary??)
-    String backgroundPath;
-    public SpriteBatch batch;
+    private Polygon bounds; //Bounds of the level
+    private Texture background; //Background image of the level
+    private Vector2 startPoint; //Starting point of the player (May be unnecessary??)
+    private String backgroundPath; //Path of the background of the level
+    private SpriteBatch batch;
 
-    public ShapeRenderer shapeRenderer;
-    ArrayList<Entity> entities;
-    public PlayerEntity playerTest;
+    private ShapeRenderer shapeRenderer;
 
+    private ArrayList<Entity> entities;
+    private PlayerEntity playerTest;
 
-    boolean endState; //Indicator whether the level has been completed
-    boolean failState; //Indicator whether the player has failed the level
+    private ArrayList<Vector2> entitiesPositions;
+
+    private boolean endState; //Indicator whether the level has been completed
+    private boolean failState; //Indicator whether the player has failed the level
 
     /**
      * Populates the level with the information extracted from the JSON file
      * TODO: add all the info of the level to make them easier to create
      */
-    public Level() {
+    public Level(ArrayList<Vector2> positions, Vector2 startPoint, Polygon bounds, String bgPath) {
+
+        this.entitiesPositions = positions;
+        this.startPoint = startPoint;
+        this.bounds = bounds;
+        this.backgroundPath = bgPath;
+        this.entities = null;
+
     }
 
     /**
@@ -62,6 +70,12 @@ public class Level {
                     entity.getCollisionBox().getRotation());
             entity.move();
         }
+        for(Entity entity: playerTest.getProjectiles()){
+            batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
+                    entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
+                    entity.getCollisionBox().getRotation());
+            entity.move();
+        }
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
         batch.end();
@@ -75,6 +89,7 @@ public class Level {
 
         shapeRenderer.polygon(playerTest.getCollisionBox().getTransformedVertices());
         for(Entity entity: entities) shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
+        for(Entity entity: playerTest.getProjectiles())shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
         shapeRenderer.polygon(bounds.getTransformedVertices());
 
         shapeRenderer.end();
@@ -90,6 +105,9 @@ public class Level {
         }
 
         for(Entity e: entities){
+            for(Entity e1: playerTest.getProjectiles()){
+                CollisionHandler.isCollidingEntity(e,e1);
+            }
             CollisionHandler.isCollidingEntity(playerTest, e);
         }
 
@@ -106,35 +124,17 @@ public class Level {
             }
         }
 
-        for(Entity e: deadEntities)entities.remove(e);
+        for(Entity e: deadEntities){
+            entities.remove(e);
+            e.revive();
+            e.preSerialize();
+        }
 
         if(!playerTest.alive()) failCondition();
     }
 
-    public void playerShoot(){
-
-        float direction = playerTest.getRotation();
-        float speed = 50;
-        Vector2 pos =  new Vector2();
-        pos.x = playerTest.getCollisionBox().getTransformedVertices()[4]+5*(float)Math.cos(Math.toRadians(direction));
-        pos.y = playerTest.getCollisionBox().getTransformedVertices()[5]+5*(float)Math.sin(Math.toRadians(direction));
-        Vector2 dir = new Vector2((float)Math.cos(Math.toRadians(direction))*speed,
-                (float)Math.sin(Math.toRadians(direction))*speed);
-
-        float[] col = new float[]{4,10,4,0,0,0,0,10};
-        MovingEntity projectile = new MovingEntity("Projectile.png", new Polygon(col),pos, dir);
-        entities.add(projectile);
-    }
-
     public void cleanUp(){batch.dispose();}
 
-    /**
-     * Checks if the criteria for completing the level has been met
-     * and changes the endState variable
-     */
-    private void endCondition() {
-        endState = true;
-    }
 
     /**
      * Checks if the criteria for failing a level has been met and
@@ -146,45 +146,40 @@ public class Level {
 
     public void postDeSerialize(){
         background = new Texture(backgroundPath);
-        for(Entity entity: entities)entity.postDeSerialize();
+        entities = new ArrayList<>();
+        for(int i = 0; i < entitiesPositions.size(); i++) {
+            entities.add(new Entity("playerTest.png", new Polygon(new float[]{0,0,0,40,50,20}), null));
+            entities.get(i).setPos(entitiesPositions.get(i));
+        }
         batch = new SpriteBatch();
         playerTest = new PlayerEntity(startPoint);
         shapeRenderer = new ShapeRenderer();
     }
 
     public void preSerialize(){
+        background.dispose();
         background = null;
-        for(Entity entity: entities)entity.preSerialize();
+        for(Entity e: entities){
+            e.revive();
+            e.preSerialize();
+        }
+        entities.clear();
+        entities = null;
         batch = null;
+        playerTest.preSerialize();
         playerTest = null;
         shapeRenderer = null;
     }
 
-    public void setBackgroundPath(String backgroundPath) {
-        this.backgroundPath = backgroundPath;
+    public PlayerEntity getPlayerTest(){
+        return playerTest;
     }
 
-    public void setBounds(Polygon bounds) {
-        this.bounds = bounds;
+    public SpriteBatch getBatch(){
+        return batch;
     }
 
-    public void setStartPoint(Vector2 startPoint) {
-        this.startPoint = startPoint;
-    }
-
-    public void setEntities(List<Entity> entities) {
-        this.entities = (ArrayList<Entity>) entities;
-    }
-
-    public List<Entity> getEntities() {
-        return entities;
-    }
-
-    public Polygon getBounds() {
-        return bounds;
-    }
-
-    public Texture getBackground(){
-        return background;
+    public ShapeRenderer getDebugRenderer(){
+        return shapeRenderer;
     }
 }

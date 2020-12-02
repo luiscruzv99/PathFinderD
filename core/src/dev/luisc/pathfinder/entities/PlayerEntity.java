@@ -3,6 +3,8 @@ package dev.luisc.pathfinder.entities;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.ArrayList;
+
 /**
  * Class that controls the player inside the game
  *
@@ -11,11 +13,14 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class PlayerEntity extends MovingEntity {
 
-    float rotation; //Rotation of the player
-    float rotationSpeed; //Speed at which the player rotates
+    private float rotation; //Rotation of the player
+    private float rotationSpeed; //Speed at which the player rotates
 
-    public float speedComponent; //Total speed of the player
-    float acceleration; //Acceleration of the player, always in the direction the polygon is pointing
+    private float speedComponent; //Total speed of the player
+    private float acceleration; //Acceleration of the player, always in the direction the polygon is pointing
+
+    private ArrayList<Entity> projectiles;
+
 
     /**
      * Create the player entity, with its predefined hitbox (Change hitbox in the future)
@@ -28,11 +33,12 @@ public class PlayerEntity extends MovingEntity {
                 0,40,
                 50,20}),pos, new Vector2(0,0));
 
-        collisionBox.setOrigin(30,20);
+        getCollisionBox().setOrigin(30,20);
         this.speedComponent = 0;
         this.acceleration = 0;
         this.rotation = 0;
         this.rotationSpeed = 0;
+        projectiles = new ArrayList<>();
     }
 
     /**
@@ -46,7 +52,6 @@ public class PlayerEntity extends MovingEntity {
         }else{
             if(rotationSpeed<7)rotationSpeed+=2;
         }
-        acceleration+=0.1;
     }
 
     /**
@@ -61,11 +66,31 @@ public class PlayerEntity extends MovingEntity {
         }
     }
 
+    @Override
+    public void postDeSerialize() {
+        super.postDeSerialize();
+        projectiles = new ArrayList<>();
+    }
+
+    @Override
+    public void preSerialize() {
+        super.preSerialize();
+        if(!projectiles.isEmpty()){
+            for(Entity e : projectiles){
+                e.revive();
+                e.preSerialize();
+            }
+            projectiles.clear();
+
+        }
+        projectiles = null;
+    }
+
     /**
      * Boost the player's speed for a short time
      */
     public void boost(){
-        if(speedComponent<5) acceleration=50;
+        if(speedComponent<5) acceleration=20;
     }
 
     /**
@@ -73,10 +98,10 @@ public class PlayerEntity extends MovingEntity {
      */
     @Override
     public void move() {
-        rotationSpeed += -0.08 * rotationSpeed; //Decay rotation speed
+        rotationSpeed += -0.1 * rotationSpeed; //Decay rotation speed
 
         //Rotate the player, rotate less the quicker it goes
-        rotation += rotationSpeed / (Math.abs(acceleration + speedComponent) * 0.05 + 1);
+        rotation += rotationSpeed / (Math.abs(speedComponent) * 0.1 + 1);
 
         if (rotation < 0) rotation += 360; //Keep rotation in bounds
 
@@ -87,20 +112,20 @@ public class PlayerEntity extends MovingEntity {
         speedComponent += -0.025 * speedComponent; //Decay speed
 
         //Calculate the speed of each component, taking into account the rotation
-        vel.x += acceleration * Math.cos(Math.toRadians(rotation)) - vel.x * 0.025;
-        vel.y += acceleration * Math.sin(Math.toRadians(rotation)) - vel.y * 0.025;
+        getVel().x += acceleration * Math.cos(Math.toRadians(rotation)) - getVel().x * 0.025;
+        getVel().y += acceleration * Math.sin(Math.toRadians(rotation)) - getVel().y * 0.025;
 
         //Move the player
-        pos.x += vel.x;
-        pos.y += vel.y;
+        getPos().x += getVel().x;
+        getPos().y += getVel().y;
 
         //Keep the rotation in bounds TODO: Check this code, may be redundant
         if (rotation > 360) rotation = 0;
         else if (rotation < -360) rotation = 0;
 
         //Move the collision of the player and set its rotation
-        collisionBox.setRotation(rotation);
-        collisionBox.setPosition(pos.x, pos.y);
+        getCollisionBox().setRotation(rotation);
+        getCollisionBox().setPosition(getPos().x, getPos().y);
     }
 
     public float getRotation(){
@@ -109,10 +134,33 @@ public class PlayerEntity extends MovingEntity {
 
     @Override
     public void levelCollision(){
-        //TODO: Check if looking direction == direction of collision of level (or not heheheheheh)
         if(hitPoints>0) hitPoints--;
         speedComponent=speedComponent*(-1);
-        vel.x=-1*vel.x;
-        vel.y=-1*vel.y;
+        getVel().x=-1*getVel().x;
+        getVel().y=-1*getVel().y;
+    }
+
+    public void shoot(){
+
+        float direction = getRotation();
+        float speed = 30;
+        Vector2 pos =  new Vector2();
+        pos.x = getCollisionBox().getTransformedVertices()[4]+5*(float)Math.cos(Math.toRadians(direction));
+        pos.y = getCollisionBox().getTransformedVertices()[5]+5*(float)Math.sin(Math.toRadians(direction));
+        Vector2 dir = new Vector2((float)Math.cos(Math.toRadians(direction))*speed,
+                (float)Math.sin(Math.toRadians(direction))*speed);
+        MovingEntity e = (MovingEntity)ProjectilePool.getInstance().lendAsteroid();
+        e.setPos(pos);
+        e.setVel(dir);
+        e.setHitPoints(1);
+        projectiles.add(e);
+    }
+
+    public ArrayList<Entity> getProjectiles() {
+        return projectiles;
+    }
+
+    public float getSpeedComponent(){
+        return speedComponent;
     }
 }

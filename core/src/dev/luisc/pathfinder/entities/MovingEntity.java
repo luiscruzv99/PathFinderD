@@ -12,7 +12,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class MovingEntity extends Entity {
 
-    Vector2 vel; //Speed of the entity
+    private Vector2 vel; //Speed of the entity
 
     /**
      * Create the moving entity
@@ -23,8 +23,8 @@ public class MovingEntity extends Entity {
      */
     public MovingEntity(String spritePath, Polygon polygon, Vector2 pos, Vector2 vel){
         super(spritePath, polygon, pos);
-        this.vel = vel;
-        collisionBox.rotate(vel.angle()-90);
+        this.vel = new Vector2();
+
     }
 
     /**
@@ -32,10 +32,21 @@ public class MovingEntity extends Entity {
      */
     @Override
     public void move(){
-        pos.x += vel.x;
-        pos.y += vel.y;
+        getPos().x += vel.x;
+        getPos().y += vel.y;
 
-        collisionBox.setPosition(pos.x, pos.y);
+        getCollisionBox().setPosition(getPos().x, getPos().y);
+    }
+
+    public void setVel(Vector2 vel){
+        this.vel.x = vel.x;
+        this.vel.y = vel.y;
+
+        getCollisionBox().rotate(vel.angle()-90);
+    }
+
+    public Vector2 getVel(){
+        return vel;
     }
 
 }

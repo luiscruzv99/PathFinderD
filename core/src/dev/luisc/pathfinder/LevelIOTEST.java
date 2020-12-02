@@ -14,7 +14,7 @@ public class LevelIOTEST {
 
     public static Level loadTest(){
 
-        Level lev = new Level();
+        Level lev = null;
 
         try(Reader reader = new FileReader("core/assets/levels/levelTest.json")){
             Gson gson = new GsonBuilder().create();
@@ -35,17 +35,13 @@ public class LevelIOTEST {
          * the path of the texture, which will have to be loaded after the object's
          * deserialization.
          */
-        Level lev = new Level();
-        ArrayList<Entity> entities= new ArrayList<>();
+
+        ArrayList<Vector2> entities= new ArrayList<>();
         for(int i=0; i<10; i++){
-            entities.add(new Entity("playerTest.png",new Polygon(new float[]{ 0,0,0,40,50,20}),
-                    new Vector2(i*100+2500, i*100*(float)Math.random()+400)));
+            entities.add(new Vector2(i*100+2500, i*100*(float)Math.random()+400));
         }
-        lev.setEntities(entities);
-        lev.setStartPoint(new Vector2(1000,1000));
-        lev.setBounds(new Polygon(new float[]{800,400,800,4600,4200,4600,4200,400}));
-        lev.setBackgroundPath("bgTest.png");
-        lev.preSerialize();
+        Level lev = new Level(entities, new Vector2(1000,1000),new Polygon(new float[]{800,400,800,4600,4200,4600,4200,400}),"bgTest.png");
+        //lev.preSerialize();
 
         try(Writer writer = new FileWriter("core/assets/levels/levelTest.json")){
             Gson gson = new GsonBuilder().setPrettyPrinting().create();

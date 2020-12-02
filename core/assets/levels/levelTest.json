@@ -24,266 +24,46 @@
     "y": 1000.0
   },
   "backgroundPath": "bgTest.png",
-  "entities": [
+  "entitiesPositions": [
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 2500.0,
-        "y": 400.0,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 2500.0,
-        "y": 400.0
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 2500.0,
+      "y": 400.0
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 2600.0,
-        "y": 475.60907,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 2600.0,
-        "y": 475.60907
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 2600.0,
+      "y": 448.85123
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 2700.0,
-        "y": 412.09064,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 2700.0,
-        "y": 412.09064
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 2700.0,
+      "y": 531.4458
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 2800.0,
-        "y": 469.50674,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 2800.0,
-        "y": 469.50674
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 2800.0,
+      "y": 467.98047
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 2900.0,
-        "y": 467.92587,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 2900.0,
-        "y": 467.92587
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 2900.0,
+      "y": 677.39014
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 3000.0,
-        "y": 898.80347,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 3000.0,
-        "y": 898.80347
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 3000.0,
+      "y": 719.0924
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 3100.0,
-        "y": 813.57715,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 3100.0,
-        "y": 813.57715
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 3100.0,
+      "y": 793.3931
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 3200.0,
-        "y": 633.8403,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 3200.0,
-        "y": 633.8403
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 3200.0,
+      "y": 634.7918
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 3300.0,
-        "y": 948.3186,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 3300.0,
-        "y": 948.3186
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 3300.0,
+      "y": 1191.0764
     },
     {
-      "collisionBox": {
-        "localVertices": [
-          0.0,
-          0.0,
-          0.0,
-          40.0,
-          50.0,
-          20.0
-        ],
-        "x": 3400.0,
-        "y": 802.00964,
-        "originX": 0.0,
-        "originY": 0.0,
-        "rotation": 0.0,
-        "scaleX": 1.0,
-        "scaleY": 1.0,
-        "dirty": true
-      },
-      "pos": {
-        "x": 3400.0,
-        "y": 802.00964
-      },
-      "spritePath": "playerTest.png",
-      "hitPoints": 2
+      "x": 3400.0,
+      "y": 988.8022
     }
   ],
   "endState": false,

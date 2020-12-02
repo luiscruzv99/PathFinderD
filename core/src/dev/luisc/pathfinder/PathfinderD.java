@@ -28,33 +28,35 @@ public class PathfinderD extends ApplicationAdapter {
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			levelTest.playerTest.rotate(false);
+			levelTest.getPlayerTest().rotate(false);
 		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			levelTest.playerTest.rotate(true);
+			levelTest.getPlayerTest().rotate(true);
 		}
 
 		if(Gdx.input.isKeyPressed(Input.Keys.W)){
-			levelTest.playerTest.accelerate(true);
+			levelTest.getPlayerTest().accelerate(true);
 		}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-			levelTest.playerTest.accelerate(false);
+			levelTest.getPlayerTest().accelerate(false);
 		}
 
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.playerTest.boost();
+		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.getPlayerTest().boost();
 
-		if(Gdx.input.isKeyPressed(Input.Keys.Z)) levelTest.playerShoot();
+		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) levelTest.getPlayerTest().shoot();
 
-		camera.zoom =1+ (levelTest.playerTest.speedComponent)/50;
-		camera.position.set(levelTest.playerTest.getPos(), 0); // Maybe add dynamic zoom based on speed??
+
+		camera.position.set(levelTest.getPlayerTest().getPos(), 0); // Maybe add dynamic zoom based on speed??
+		camera.zoom =1.05f +(levelTest.getPlayerTest().getSpeedComponent())/100;
 		camera.update();
 
-		levelTest.batch.setProjectionMatrix(camera.combined);
-		levelTest.shapeRenderer.setProjectionMatrix(camera.combined);
+		levelTest.getBatch().setProjectionMatrix(camera.combined);
+		levelTest.getDebugRenderer().setProjectionMatrix(camera.combined);
 
 		//Lo que va antes se renderiza por debajo (Uso para paralax?????)
 		if(levelTest.render()){
 			levelTest.cleanUp();
+			levelTest.preSerialize();
 			levelTest = LevelIOTEST.loadTest();
-			System.out.println("Recargando nivel, el jugador o ha muerto o ha matado a las entidades");
+			//System.out.println("Recargando nivel, el jugador o ha muerto o ha matado a las entidades");
 		};
 		levelTest.debugRender();
 
