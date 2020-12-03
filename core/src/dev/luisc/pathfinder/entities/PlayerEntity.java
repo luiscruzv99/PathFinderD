@@ -126,6 +126,18 @@ public class PlayerEntity extends MovingEntity {
         //Move the collision of the player and set its rotation
         getCollisionBox().setRotation(rotation);
         getCollisionBox().setPosition(getPos().x, getPos().y);
+
+        ArrayList<Entity> dead = new ArrayList<>();
+        for(Entity e: projectiles)
+            if(!e.alive())
+                dead.add(e);
+
+        for(Entity e: dead) {
+            projectiles.remove(e);
+            e.revive();
+            ProjectilePool.getInstance().receiveAsteroid((MovingEntity) e);
+        }
+        dead.clear();
     }
 
     public float getRotation(){
@@ -152,6 +164,8 @@ public class PlayerEntity extends MovingEntity {
         MovingEntity e = (MovingEntity)ProjectilePool.getInstance().lendAsteroid();
         e.setPos(pos);
         e.setVel(dir);
+        e.getCollisionBox().rotate(getRotation()-90);
+        e.getSprite().setRotation(getRotation()-90);
         e.setHitPoints(1);
         projectiles.add(e);
     }

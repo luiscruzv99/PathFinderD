@@ -77,7 +77,9 @@ public class Entity {
         return true;
     }
 
-    public void levelCollision(){}
+    public void levelCollision(){
+        if(hitPoints>0) hitPoints--;
+    }
 
     public void move(){}
 

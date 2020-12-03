@@ -69,12 +69,17 @@ public class Level {
                     entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
                     entity.getCollisionBox().getRotation());
             entity.move();
+            checkCollisions();
         }
+        checkCollisions();
+        aliveEntities();
+        playerTest.move();
         for(Entity entity: playerTest.getProjectiles()){
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
                     entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
                     entity.getCollisionBox().getRotation());
             entity.move();
+            checkCollisions();
         }
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
@@ -107,6 +112,7 @@ public class Level {
         for(Entity e: entities){
             for(Entity e1: playerTest.getProjectiles()){
                 CollisionHandler.isCollidingEntity(e,e1);
+                CollisionHandler.isCollidingLevel(e1, bounds);
             }
             CollisionHandler.isCollidingEntity(playerTest, e);
         }

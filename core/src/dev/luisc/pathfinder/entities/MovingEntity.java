@@ -42,7 +42,7 @@ public class MovingEntity extends Entity {
         this.vel.x = vel.x;
         this.vel.y = vel.y;
 
-        getCollisionBox().rotate(vel.angle()-90);
+        //getCollisionBox().rotate(vel.angle()-90);
     }
 
     public Vector2 getVel(){

@@ -1,6 +1,7 @@
 package dev.luisc.pathfinder.entities;
 
 import com.badlogic.gdx.math.Polygon;
+import com.badlogic.gdx.math.Vector2;
 
 import java.util.Stack;
 
@@ -30,7 +31,11 @@ public class ProjectilePool {
 
     public void receiveAsteroid(MovingEntity asteroid){
         //asteroid.setPos(null);
-        if(projectiles.size() < PROJECTILE_NUMBER) projectiles.add(asteroid);
+        if(projectiles.size() < PROJECTILE_NUMBER){
+            asteroid.setVel(new Vector2(0,0));
+            asteroid.setPos(new Vector2(0,0));
+            projectiles.add(asteroid);
+        }
         else {
             System.out.println("POOL LLENA, BORRANDO ENTIDAD");
             asteroid.preSerialize(); // """DELETE""" the object if stack is full
