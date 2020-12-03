@@ -127,6 +127,10 @@ public class PlayerEntity extends MovingEntity {
         getCollisionBox().setRotation(rotation);
         getCollisionBox().setPosition(getPos().x, getPos().y);
 
+        if(speedComponent>9)
+            System.out.println(speedComponent);
+
+        //TODO: MOVE THIS TO EXTERNAL METHOD
         ArrayList<Entity> dead = new ArrayList<>();
         for(Entity e: projectiles)
             if(!e.alive())

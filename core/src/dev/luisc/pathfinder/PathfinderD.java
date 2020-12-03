@@ -46,7 +46,7 @@ public class PathfinderD extends ApplicationAdapter {
 
 
 		camera.position.set(levelTest.getPlayerTest().getPos(), 0); // Maybe add dynamic zoom based on speed??
-		camera.zoom =1.05f +(levelTest.getPlayerTest().getSpeedComponent())/100;
+		camera.zoom =1 + zoomDelta()/4;
 		camera.update();
 
 		levelTest.getBatch().setProjectionMatrix(camera.combined);
@@ -70,5 +70,13 @@ public class PathfinderD extends ApplicationAdapter {
 	@Override
 	public void dispose () {
 		levelTest.cleanUp();
+	}
+
+	private float zoomDelta(){
+		//
+		// float log = (float) Math.log10(Math.abs(levelTest.getPlayerTest().getSpeedComponent())+1);
+		float exp = (float) Math.pow(levelTest.getPlayerTest().getSpeedComponent(),6);
+
+		return exp/(exp+100);
 	}
 }
