@@ -27,6 +27,7 @@ public class PathfinderD extends ApplicationAdapter {
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
+		//TODO: MOVE THIS TO CLASS CONTROL LISTENER
 		if(Gdx.input.isKeyPressed(Input.Keys.A)){
 			levelTest.getPlayerTest().rotate(false);
 		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){

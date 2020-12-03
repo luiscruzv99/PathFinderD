@@ -90,7 +90,7 @@ public class PlayerEntity extends MovingEntity {
      * Boost the player's speed for a short time
      */
     public void boost(){
-        if(speedComponent<5) acceleration=20;
+        if(speedComponent<5) acceleration=10;
     }
 
     /**
@@ -154,19 +154,24 @@ public class PlayerEntity extends MovingEntity {
 
     public void shoot(){
 
-        float direction = getRotation();
-        float speed = 30;
-        Vector2 pos =  new Vector2();
+        float direction = getRotation(); //Get the direction the player's facing
+        float speed = 30; //Set a fixed speed of 30 px/f
+
+        Vector2 pos =  new Vector2(); //Create the position vector
         pos.x = getCollisionBox().getTransformedVertices()[4]+5*(float)Math.cos(Math.toRadians(direction));
         pos.y = getCollisionBox().getTransformedVertices()[5]+5*(float)Math.sin(Math.toRadians(direction));
+
         Vector2 dir = new Vector2((float)Math.cos(Math.toRadians(direction))*speed,
-                (float)Math.sin(Math.toRadians(direction))*speed);
-        MovingEntity e = (MovingEntity)ProjectilePool.getInstance().lendAsteroid();
+                (float)Math.sin(Math.toRadians(direction))*speed); //Create the velocity vector
+
+        MovingEntity e = (MovingEntity)ProjectilePool.getInstance().lendAsteroid(); //Get a projectile from the pool
+
+        //Set its attributes
         e.setPos(pos);
         e.setVel(dir);
-        e.getCollisionBox().rotate(getRotation()-90);
-        e.getSprite().setRotation(getRotation()-90);
+        e.getCollisionBox().setRotation(getRotation()-90);
         e.setHitPoints(1);
+        //Add to the shot projectiles
         projectiles.add(e);
     }
 

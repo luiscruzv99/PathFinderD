@@ -40,7 +40,6 @@ public class Level {
 
     /**
      * Populates the level with the information extracted from the JSON file
-     * TODO: add all the info of the level to make them easier to create
      */
     public Level(ArrayList<Vector2> positions, Vector2 startPoint, Polygon bounds, String bgPath) {
 
@@ -73,7 +72,7 @@ public class Level {
         }
         checkCollisions();
         aliveEntities();
-        playerTest.move();
+
         for(Entity entity: playerTest.getProjectiles()){
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
                     entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
@@ -81,6 +80,7 @@ public class Level {
             entity.move();
             checkCollisions();
         }
+
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
         batch.end();

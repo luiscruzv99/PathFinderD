@@ -88,6 +88,7 @@ public class Entity {
         collisionBox.setPosition(pos.x, pos.y);
     }
 
+
     public void setHitPoints(int hp){
         this.hitPoints = hp;
     }
