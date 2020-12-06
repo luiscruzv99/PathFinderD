@@ -98,7 +98,7 @@ public class PlayerEntity extends MovingEntity {
      */
     @Override
     public void move() {
-        rotationSpeed += -0.1 * rotationSpeed; //Decay rotation speed
+        rotationSpeed += -0.15 * rotationSpeed; //Decay rotation speed
 
         //Rotate the player, rotate less the quicker it goes
         rotation += rotationSpeed / (Math.abs(speedComponent) * 0.1 + 1);
