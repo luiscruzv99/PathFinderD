@@ -1,6 +1,7 @@
 package dev.luisc.pathfinder.levels;
 
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
@@ -12,6 +13,7 @@ import dev.luisc.pathfinder.entities.ProjectilePool;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
 
+import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -41,6 +43,7 @@ public class Level {
 
     public static final float TICK_TIME = 0.02f; // Interval between ticks (Seconds)
     private Timer.Task t;
+    private BitmapFont font;
 
     /**
      * Populates the level with the information
@@ -78,6 +81,8 @@ public class Level {
 
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
+
+        font.draw(batch, Float.toString(playerTest.getSpeedComponent()),playerTest.getPos().x+50, playerTest.getPos().y+50);
         batch.end();
 
         return endState || failState;
@@ -156,6 +161,8 @@ public class Level {
         playerTest = new PlayerEntity(startPoint);
         shapeRenderer = new ShapeRenderer();
 
+        font = new BitmapFont();
+        font.setColor(0,0,0,255);
         /*
         ------TICK SYSTEM------
         ------100 ticks/s------

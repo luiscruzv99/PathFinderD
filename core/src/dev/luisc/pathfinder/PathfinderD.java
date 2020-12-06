@@ -52,7 +52,7 @@ public class PathfinderD extends ApplicationAdapter {
 
 		if(Math.abs(levelTest.getPlayerTest().getSpeedComponent()) > levelTest.getPlayerTest().MAX_SPEED/4 && camera.zoom < 1.2){
 			camera.zoom += 1.33 * Gdx.graphics.getDeltaTime();
-		}else if(levelTest.getPlayerTest().getSpeedComponent() < levelTest.getPlayerTest().MAX_SPEED/8 && camera.zoom > 0.8){
+		}else if(Math.abs(levelTest.getPlayerTest().getSpeedComponent()) < levelTest.getPlayerTest().MAX_SPEED/6 && camera.zoom > 0.8){
 			camera.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
 		}
 

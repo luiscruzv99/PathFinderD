@@ -112,6 +112,8 @@ public class PlayerEntity extends MovingEntity {
         rotation += rotationSpeed * Level.TICK_TIME;
         rotationSpeed += -5 * rotationSpeed * Level.TICK_TIME;
 
+        if(Math.abs(speedComponent) < 1) speedComponent = 0.0f;
+
         getCollisionBox().setRotation(rotation);
 
         getCollisionBox().setPosition(getPos().x, getPos().y);
