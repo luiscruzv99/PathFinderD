@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import com.badlogic.gdx.utils.Timer;
 import dev.luisc.pathfinder.collisions.CollisionHandler;
 import dev.luisc.pathfinder.entities.MovingEntity;
 import dev.luisc.pathfinder.entities.ProjectilePool;
@@ -38,8 +39,11 @@ public class Level {
     private boolean endState; //Indicator whether the level has been completed
     private boolean failState; //Indicator whether the player has failed the level
 
+    public static final float TICK_TIME = 0.02f; // Interval between ticks (Seconds)
+    private Timer.Task t;
+
     /**
-     * Populates the level with the information extracted from the JSON file
+     * Populates the level with the information
      */
     public Level(ArrayList<Vector2> positions, Vector2 startPoint, Polygon bounds, String bgPath) {
 
@@ -57,9 +61,6 @@ public class Level {
      * @return whether the level has been completed, thus ending the render
      */
     public boolean render() {
-        checkCollisions();
-        aliveEntities();
-        playerTest.move();
 
         batch.begin();
         batch.draw(background, 0,0);
@@ -67,18 +68,12 @@ public class Level {
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
                     entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
                     entity.getCollisionBox().getRotation());
-            entity.move();
-            checkCollisions();
         }
-        checkCollisions();
-        aliveEntities();
 
         for(Entity entity: playerTest.getProjectiles()){
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
                     entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
                     entity.getCollisionBox().getRotation());
-            entity.move();
-            checkCollisions();
         }
 
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
@@ -118,6 +113,7 @@ public class Level {
         }
 
         CollisionHandler.isCollidingLevel(playerTest, bounds);
+
     }
 
     private void aliveEntities(){
@@ -141,7 +137,6 @@ public class Level {
 
     public void cleanUp(){batch.dispose();}
 
-
     /**
      * Checks if the criteria for failing a level has been met and
      * changes the failState variable
@@ -160,6 +155,18 @@ public class Level {
         batch = new SpriteBatch();
         playerTest = new PlayerEntity(startPoint);
         shapeRenderer = new ShapeRenderer();
+
+        /*
+        ------TICK SYSTEM------
+        ------100 ticks/s------
+         */
+        t = new Timer.Task() {
+            @Override
+            public void run() {
+                moveAndCollide();
+            }
+        };
+        Timer.schedule(t,TICK_TIME,TICK_TIME);
     }
 
     public void preSerialize(){
@@ -175,6 +182,8 @@ public class Level {
         playerTest.preSerialize();
         playerTest = null;
         shapeRenderer = null;
+        t.cancel();
+
     }
 
     public PlayerEntity getPlayerTest(){
@@ -187,5 +196,22 @@ public class Level {
 
     public ShapeRenderer getDebugRenderer(){
         return shapeRenderer;
+    }
+
+    private void moveAndCollide(){
+
+        for(Entity entity: entities){
+            entity.move();
+        }
+        playerTest.move();
+
+        for(Entity entity: playerTest.getProjectiles()){
+            entity.move();
+        }
+        checkCollisions();
+
+        playerTest.deSpawnProjectiles();
+        aliveEntities();
+
     }
 }

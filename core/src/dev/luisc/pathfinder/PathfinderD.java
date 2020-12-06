@@ -5,6 +5,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
+import dev.luisc.pathfinder.entities.ProjectilePool;
 import dev.luisc.pathfinder.levels.Level;
 
 public class PathfinderD extends ApplicationAdapter {
@@ -18,8 +19,9 @@ public class PathfinderD extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.zoom = 0.8f;
-		LevelIOTEST.saveTest();
+		//LevelIOTEST.saveTest();
 		levelTest= LevelIOTEST.loadTest();
+		ProjectilePool.getInstance();
 
 	}
 
@@ -46,12 +48,14 @@ public class PathfinderD extends ApplicationAdapter {
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) levelTest.getPlayerTest().shoot();
 
 
-		camera.position.set(levelTest.getPlayerTest().getPos(), 0); // Maybe add dynamic zoom based on speed??
-		if(Math.abs(levelTest.getPlayerTest().getSpeedComponent()) > 3 && camera.zoom < 1.2){
+		camera.position.set(levelTest.getPlayerTest().getPos(), 0);
+
+		if(Math.abs(levelTest.getPlayerTest().getSpeedComponent()) > levelTest.getPlayerTest().MAX_SPEED/4 && camera.zoom < 1.2){
 			camera.zoom += 1.33 * Gdx.graphics.getDeltaTime();
-		}else if(levelTest.getPlayerTest().getSpeedComponent() < 2 && camera.zoom > 0.8){
+		}else if(levelTest.getPlayerTest().getSpeedComponent() < levelTest.getPlayerTest().MAX_SPEED/8 && camera.zoom > 0.8){
 			camera.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
 		}
+
 		camera.update();
 
 		levelTest.getBatch().setProjectionMatrix(camera.combined);
