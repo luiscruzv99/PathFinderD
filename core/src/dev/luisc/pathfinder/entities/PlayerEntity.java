@@ -64,7 +64,7 @@ public class PlayerEntity extends MovingEntity {
      */
     public void accelerate(boolean direction){
         if(direction && speedComponent < MAX_SPEED)
-            acceleration += MAX_SPEED/4;
+            acceleration += MAX_SPEED;
         else
             if(speedComponent > -MAX_SPEED/1.5 )acceleration -= MAX_SPEED/4;
 
@@ -103,11 +103,11 @@ public class PlayerEntity extends MovingEntity {
     @Override
     public void move() {
 
-        speedComponent = (acceleration * Level.TICK_TIME) + (0.9f * speedComponent);
-        acceleration += (0.05 * -acceleration);
+        speedComponent += (acceleration * Level.TICK_TIME) - (2*speedComponent*Level.TICK_TIME);
+        acceleration += (-3*acceleration*Level.TICK_TIME);
 
-        getPos().x += (float) Math.cos(Math.toRadians(rotation)) * speedComponent * Level.TICK_TIME + acceleration * Math.pow(Level.TICK_TIME, 2);
-        getPos().y += (float) Math.sin(Math.toRadians(rotation)) * speedComponent * Level.TICK_TIME + acceleration * Math.pow(Level.TICK_TIME, 2);
+        getPos().x += (float) Math.cos(Math.toRadians(rotation)) * (speedComponent * Level.TICK_TIME + acceleration * Math.pow(Level.TICK_TIME, 2));
+        getPos().y += (float) Math.sin(Math.toRadians(rotation)) * (speedComponent * Level.TICK_TIME + acceleration * Math.pow(Level.TICK_TIME, 2));
 
         rotation += rotationSpeed * Level.TICK_TIME;
         rotationSpeed += -5 * rotationSpeed * Level.TICK_TIME;

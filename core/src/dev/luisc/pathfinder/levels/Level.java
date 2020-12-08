@@ -41,7 +41,7 @@ public class Level {
     private boolean endState; //Indicator whether the level has been completed
     private boolean failState; //Indicator whether the player has failed the level
 
-    public static final float TICK_TIME = 0.02f; // Interval between ticks (Seconds)
+    public static final float TICK_TIME = 0.005f; // Interval between ticks (Seconds)
     private Timer.Task t;
     private BitmapFont font;
 
@@ -83,6 +83,7 @@ public class Level {
                 30,20,50,40,1,1,playerTest.getRotation());
 
         font.draw(batch, Float.toString(playerTest.getSpeedComponent()),playerTest.getPos().x+50, playerTest.getPos().y+50);
+        font.draw(batch, Float.toString(playerTest.getPos().x)+", "+Float.toString(playerTest.getPos().y), playerTest.getPos().x-100, playerTest.getPos().y+50);
         batch.end();
 
         return endState || failState;
