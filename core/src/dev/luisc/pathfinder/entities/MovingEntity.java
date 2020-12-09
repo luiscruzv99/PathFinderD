@@ -1,8 +1,10 @@
 package dev.luisc.pathfinder.entities;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import dev.luisc.pathfinder.levels.Level;
 
 /**
  * Class that controls an entity capable of moving with a constant speed
@@ -12,7 +14,7 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class MovingEntity extends Entity {
 
-    Vector2 vel; //Speed of the entity
+    private Vector2 vel; //Speed of the entity in pixels per second
 
     /**
      * Create the moving entity
@@ -23,17 +25,31 @@ public class MovingEntity extends Entity {
      */
     public MovingEntity(String spritePath, Polygon polygon, Vector2 pos, Vector2 vel){
         super(spritePath, polygon, pos);
-        this.vel = vel;
+        this.vel = new Vector2();
+
     }
 
     /**
      * Move the entity and its collision
      */
+    @Override
     public void move(){
-        pos.x += vel.x;
-        pos.y += vel.y;
 
-        collisionBox.setPosition(pos.x, pos.y);
+        getPos().x += vel.x * Level.TICK_TIME;
+        getPos().y += vel.y * Level.TICK_TIME;
+
+        getCollisionBox().setPosition(getPos().x, getPos().y);
+    }
+
+    public void setVel(Vector2 vel){
+        this.vel.x = vel.x;
+        this.vel.y = vel.y;
+
+        getCollisionBox().rotate(vel.angle()-90);
+    }
+
+    public Vector2 getVel(){
+        return vel;
     }
 
 }

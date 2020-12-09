@@ -13,10 +13,12 @@ import com.badlogic.gdx.math.Vector2;
  */
 public class Entity {
 
-    Sprite sprite; //Sprite of the entity
-    Polygon collisionBox; //Collision box
-    Vector2 pos; //Position
-    String spritePath;
+    private Sprite sprite; //Sprite of the entity
+    private Polygon collisionBox; //Collision box
+    private Vector2 pos; //Position
+    private String spritePath;
+    private int FULL_HEALTH;
+    int hitPoints=2;
 
     //Empty private constructor to prevent from doing super()
     private Entity(){}
@@ -31,7 +33,8 @@ public class Entity {
         this.spritePath = spritePath;
         this.collisionBox=polygon;
         this.pos=pos;
-        collisionBox.setPosition(pos.x, pos.y);
+        hitPoints=2;
+        FULL_HEALTH = hitPoints;
         postDeSerialize();
     }
 
@@ -44,7 +47,13 @@ public class Entity {
     }
 
     public void preSerialize(){
+        sprite.getTexture().dispose();
         sprite = null;
+        hitPoints=FULL_HEALTH;
+    }
+
+    public void revive(){
+        hitPoints=FULL_HEALTH;
     }
 
     public Sprite getSprite() {
@@ -57,5 +66,30 @@ public class Entity {
 
     public Vector2 getPos() {
         return pos;
+    }
+
+    public void collision(){
+        if(hitPoints>0) hitPoints--;
+    }
+
+    public boolean alive(){
+        if(hitPoints==0)return false;
+        return true;
+    }
+
+    public void levelCollision(){
+        if(hitPoints>0) hitPoints--;
+    }
+
+    public void move(){}
+
+    public void setPos(Vector2 pos){
+        this.pos = pos;
+        collisionBox.setPosition(pos.x, pos.y);
+    }
+
+
+    public void setHitPoints(int hp){
+        this.hitPoints = hp;
     }
 }
