@@ -8,12 +8,9 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
 import dev.luisc.pathfinder.collisions.CollisionHandler;
-import dev.luisc.pathfinder.entities.MovingEntity;
-import dev.luisc.pathfinder.entities.ProjectilePool;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 /**
@@ -29,32 +26,32 @@ public class Level {
     private Texture background; //Background image of the level
     private Vector2 startPoint; //Starting point of the player (May be unnecessary??)
     private String backgroundPath; //Path of the background of the level
-    private SpriteBatch batch;
+    private SpriteBatch batch; //Image renderer
 
-    private ShapeRenderer shapeRenderer;
+    private ShapeRenderer shapeRenderer; //CollisionBox renderer(for debug)
 
-    private ArrayList<Entity> entities;
+    private ArrayList<Entity> dumbEntities;
     private PlayerEntity playerTest;
 
-    private ArrayList<Vector2> entitiesPositions;
+    private ArrayList<Vector2> dumbEntitiesPositions;
 
     private boolean endState; //Indicator whether the level has been completed
     private boolean failState; //Indicator whether the player has failed the level
 
     public static final float TICK_TIME = 0.005f; // Interval between ticks (Seconds)
-    private Timer.Task t;
-    private BitmapFont font;
+    private Timer.Task t; //Tick system
+    private BitmapFont font; //UI of the ship (speed and position for now (debug))
 
     /**
      * Populates the level with the information
      */
     public Level(ArrayList<Vector2> positions, Vector2 startPoint, Polygon bounds, String bgPath) {
 
-        this.entitiesPositions = positions;
+        this.dumbEntitiesPositions = positions;
         this.startPoint = startPoint;
         this.bounds = bounds;
         this.backgroundPath = bgPath;
-        this.entities = null;
+        this.dumbEntities = null;
 
     }
 
@@ -67,7 +64,7 @@ public class Level {
 
         batch.begin();
         batch.draw(background, 0,0);
-        for(Entity entity: entities){
+        for(Entity entity: dumbEntities){
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
                     entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
                     entity.getCollisionBox().getRotation());
@@ -94,7 +91,7 @@ public class Level {
         shapeRenderer.setColor(0, 0, 0, 0.0f);
 
         shapeRenderer.polygon(playerTest.getCollisionBox().getTransformedVertices());
-        for(Entity entity: entities) shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
+        for(Entity entity: dumbEntities) shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
         for(Entity entity: playerTest.getProjectiles())shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
         shapeRenderer.polygon(bounds.getTransformedVertices());
 
@@ -104,13 +101,13 @@ public class Level {
 
     private void checkCollisions(){
 
-        for(Entity entity: entities){
-            for(Entity entity1: entities){
+        for(Entity entity: dumbEntities){
+            for(Entity entity1: dumbEntities){
                 if(!entity.equals(entity1)) CollisionHandler.isCollidingEntity(entity, entity1);
             }
         }
 
-        for(Entity e: entities){
+        for(Entity e: dumbEntities){
             for(Entity e1: playerTest.getProjectiles()){
                 CollisionHandler.isCollidingEntity(e,e1);
                 CollisionHandler.isCollidingLevel(e1, bounds);
@@ -125,15 +122,15 @@ public class Level {
     private void aliveEntities(){
         ArrayList<Entity> deadEntities = new ArrayList<>();
 
-        for(Entity entity: entities) {
+        for(Entity entity: dumbEntities) {
             if (!entity.alive()) {
-                System.out.println("Entidad: " + entities.indexOf(entity) + "murio");
+                System.out.println("Entidad: " + dumbEntities.indexOf(entity) + "murio");
                 deadEntities.add(entity);
             }
         }
 
         for(Entity e: deadEntities){
-            entities.remove(e);
+            dumbEntities.remove(e);
             e.revive();
             e.preSerialize();
         }
@@ -153,10 +150,10 @@ public class Level {
 
     public void postDeSerialize(){
         background = new Texture(backgroundPath);
-        entities = new ArrayList<>();
-        for(int i = 0; i < entitiesPositions.size(); i++) {
-            entities.add(new Entity("playerTest.png", new Polygon(new float[]{0,0,0,40,50,20}), null));
-            entities.get(i).setPos(entitiesPositions.get(i));
+        dumbEntities = new ArrayList<>();
+        for(int i = 0; i < dumbEntitiesPositions.size(); i++) {
+            dumbEntities.add(new Entity("playerTest.png", new Polygon(new float[]{0,0,0,40,50,20}), null));
+            dumbEntities.get(i).setPos(dumbEntitiesPositions.get(i));
         }
         batch = new SpriteBatch();
         playerTest = new PlayerEntity(startPoint);
@@ -180,12 +177,12 @@ public class Level {
     public void preSerialize(){
         background.dispose();
         background = null;
-        for(Entity e: entities){
+        for(Entity e: dumbEntities){
             e.revive();
             e.preSerialize();
         }
-        entities.clear();
-        entities = null;
+        dumbEntities.clear();
+        dumbEntities = null;
         batch = null;
         playerTest.preSerialize();
         playerTest = null;
@@ -208,7 +205,7 @@ public class Level {
 
     private void moveAndCollide(){
 
-        for(Entity entity: entities){
+        for(Entity entity: dumbEntities){
             entity.move();
         }
         playerTest.move();
