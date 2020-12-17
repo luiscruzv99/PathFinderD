@@ -35,7 +35,8 @@ public class Entity {
         this.pos=pos;
         hitPoints=2;
         FULL_HEALTH = hitPoints;
-        postDeSerialize();
+        if(spritePath != null)
+            postDeSerialize();
     }
 
     /**
