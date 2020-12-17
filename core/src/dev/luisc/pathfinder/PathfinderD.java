@@ -7,10 +7,11 @@ import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import dev.luisc.pathfinder.entities.ProjectilePool;
 import dev.luisc.pathfinder.levels.Level;
+import dev.luisc.pathfinder.levels.NavigationLevel;
 
 public class PathfinderD extends ApplicationAdapter {
 
-	Level levelTest;
+	NavigationLevel levelTest;
 	OrthographicCamera camera;
 
 	@Override
@@ -19,8 +20,8 @@ public class PathfinderD extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.zoom = 0.8f;
-		//LevelIOTEST.saveTest();
-		levelTest= LevelIOTEST.loadTest();
+		LevelIOTEST.saveTest();
+		levelTest= (NavigationLevel)LevelIOTEST.loadTest();
 		ProjectilePool.getInstance();
 
 	}
@@ -65,7 +66,7 @@ public class PathfinderD extends ApplicationAdapter {
 		if(levelTest.render()){
 			levelTest.cleanUp();
 			levelTest.preSerialize();
-			levelTest = LevelIOTEST.loadTest();
+			levelTest = (NavigationLevel)LevelIOTEST.loadTest();
 			//System.out.println("Recargando nivel, el jugador o ha muerto o ha matado a las entidades");
 		};
 		levelTest.debugRender();
