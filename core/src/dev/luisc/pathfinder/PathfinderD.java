@@ -46,7 +46,9 @@ public class PathfinderD extends ApplicationAdapter {
 
 		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.getPlayerTest().boost();
 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.Z)) levelTest.getPlayerTest().shoot();
+		if(Gdx.input.isKeyJustPressed(Input.Keys.E)) levelTest.getPlayerTest().shoot();
+
+		if(Gdx.input.isKeyJustPressed(Input.Keys.Q) && levelTest.getClass().getSimpleName().equals("NavigationLevel")) levelTest.placeBeacon();
 
 
 		camera.position.set(levelTest.getPlayerTest().getPos(), 0);

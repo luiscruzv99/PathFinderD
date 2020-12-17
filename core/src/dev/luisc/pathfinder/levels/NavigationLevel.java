@@ -10,19 +10,26 @@ import dev.luisc.pathfinder.entities.AiEntity;
 import dev.luisc.pathfinder.entities.Entity;
 
 import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.PriorityQueue;
+import java.util.Queue;
 
 public class NavigationLevel extends Level{
 
 
 
     private FriendlySwarm allySwarm;
-    private ArrayList<Entity> beacons;
+    private Queue<Entity> beacons;
     private Entity nextBeacon;
 
     private boolean phaseChanged = false;
 
     private ArrayList<Vector2> allyPositions;
     private ArrayList<AiEntity> allies;
+
+    private int timer = 0;
+    private int maxBeacons = 10;
+
     /**
      * Populates the level with the information
      *
@@ -55,13 +62,23 @@ public class NavigationLevel extends Level{
                         e.getCollisionBox().getRotation());
             }
         }
-
+        if(!(nextBeacon == null)){
         batch.draw(nextBeacon.getSprite(), nextBeacon.getPos().x, nextBeacon.getPos().y,0,0,
                 nextBeacon.getSprite().getWidth(), nextBeacon.getSprite().getHeight(),1,1,
-                nextBeacon.getCollisionBox().getRotation());
+                nextBeacon.getCollisionBox().getRotation());}
+
         batch.end();
-        phaseChanged = true;
+        phaseChanged = false;
         return state;
+    }
+
+    public void placeBeacon() {
+
+        if (timer > 100 && getPlayerTest().getBeaconsPlaced() < maxBeacons) {
+            beacons.offer(new Entity("Beacon.png", new Polygon(new float[]{10, 5, 10, 35, 45, 35, 45, 5}), new Vector2(getPlayerTest().getPos())));
+            getPlayerTest().placeBeacon();
+            timer = 0;
+        }
     }
 
 
@@ -99,10 +116,10 @@ public class NavigationLevel extends Level{
         for(int  i = 0; i < allyPositions.size(); i++){
             allies.add(new AiEntity("AIShip.png", new Polygon(new float[]{0,0,0,40,50,20}), allyPositions.get(i), new Vector2((float)Math.random()*100, (float)Math.random()*100)));
         }
-        beacons = new ArrayList<>();
-        nextBeacon = new Entity("Beacon.png", new Polygon(new float[]{10,5,10,35,45,35,45,5}), new Vector2(1500,1500));
+        beacons = new LinkedList<>() ;
+        nextBeacon = null;
         allySwarm = new FriendlySwarm(allies);
-        allySwarm.setObjective(nextBeacon.getPos());
+
 
     }
 
@@ -112,6 +129,11 @@ public class NavigationLevel extends Level{
             allySwarm.move();
             for(AiEntity e: allies)
                 CollisionHandler.isCollidingLevel(e, getBounds());
+        }
+        timer++;
+        if(nextBeacon == null && !beacons.isEmpty()) {
+            nextBeacon = beacons.poll();
+            allySwarm.setObjective(nextBeacon.getPos());
         }
         super.moveAndCollide();
     }
