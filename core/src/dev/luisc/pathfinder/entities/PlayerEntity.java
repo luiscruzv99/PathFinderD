@@ -22,6 +22,7 @@ public class PlayerEntity extends MovingEntity {
     private float acceleration; //Acceleration of the player (px/s^2)
 
     public static final float MAX_SPEED = 750.0f; //Max speed of the player (px/s)
+    private int timer = 0;
 
     private ArrayList<Entity> projectiles;
 
@@ -94,7 +95,10 @@ public class PlayerEntity extends MovingEntity {
      * Boost the player's speed for a short time
      */
     public void boost(){
-        if(speedComponent<50) acceleration=MAX_SPEED;
+        if(speedComponent<MAX_SPEED/8 && timer > 200 ){
+            acceleration=MAX_SPEED*250;
+            timer=0;
+        }
     }
 
     /**
@@ -121,6 +125,8 @@ public class PlayerEntity extends MovingEntity {
         getCollisionBox().setRotation(rotation);
 
         getCollisionBox().setPosition(getPos().x, getPos().y);
+        timer++;
+        System.out.println(timer);
 
 
     }
