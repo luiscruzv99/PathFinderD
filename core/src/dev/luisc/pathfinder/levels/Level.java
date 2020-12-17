@@ -79,8 +79,8 @@ public class Level {
         batch.draw(playerTest.getSprite(), playerTest.getPos().x, playerTest.getPos().y,
                 30,20,50,40,1,1,playerTest.getRotation());
 
-        font.draw(batch, Float.toString(playerTest.getSpeedComponent()),playerTest.getPos().x+50, playerTest.getPos().y+50);
-        //font.draw(batch, Float.toString(playerTest.getPos().x)+", "+Float.toString(playerTest.getPos().y), playerTest.getPos().x-100, playerTest.getPos().y+50);
+        font.draw(batch, Integer.toString(Math.round(playerTest.getSpeedComponent())),playerTest.getPos().x+75, playerTest.getPos().y+75);
+        font.draw(batch, Integer.toString(playerTest.getBeaconsPlaced()), playerTest.getPos().x-20, playerTest.getPos().y+75);
         batch.end();
 
         return endState || failState;

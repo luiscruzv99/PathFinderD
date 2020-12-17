@@ -24,6 +24,8 @@ public class PlayerEntity extends MovingEntity {
     public static final float MAX_SPEED = 750.0f; //Max speed of the player (px/s)
     private int timer = 0;
 
+    private int beaconsPlaced = 0;
+
     private ArrayList<Entity> projectiles;
 
 
@@ -126,8 +128,6 @@ public class PlayerEntity extends MovingEntity {
 
         getCollisionBox().setPosition(getPos().x, getPos().y);
         timer++;
-        System.out.println(timer);
-
 
     }
 
@@ -184,5 +184,13 @@ public class PlayerEntity extends MovingEntity {
 
     public float getSpeedComponent(){
         return speedComponent;
+    }
+
+    public int getBeaconsPlaced(){
+        return beaconsPlaced;
+    }
+
+    public void placeBeacon(){
+        beaconsPlaced++;
     }
 }
