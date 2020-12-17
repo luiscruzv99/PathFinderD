@@ -21,7 +21,7 @@ public class PlayerEntity extends MovingEntity {
     private float speedComponent; //Total speed of the player (px/s)
     private float acceleration; //Acceleration of the player (px/s^2)
 
-    public static final float MAX_SPEED = 500.0f; //Max speed of the player (px/s)
+    public static final float MAX_SPEED = 750.0f; //Max speed of the player (px/s)
 
     private ArrayList<Entity> projectiles;
 
@@ -63,7 +63,7 @@ public class PlayerEntity extends MovingEntity {
      * @param direction
      */
     public void accelerate(boolean direction){
-        if(direction && speedComponent < MAX_SPEED)
+        if(direction && (speedComponent < MAX_SPEED))
             acceleration += MAX_SPEED;
         else
             if(speedComponent > -MAX_SPEED/1.5 )acceleration -= MAX_SPEED/4;
@@ -103,7 +103,11 @@ public class PlayerEntity extends MovingEntity {
     @Override
     public void move() {
 
-        speedComponent += (acceleration * Level.TICK_TIME) - (2*speedComponent*Level.TICK_TIME);
+        if(speedComponent < MAX_SPEED && speedComponent > -MAX_SPEED/3) {
+            speedComponent += (acceleration * Level.TICK_TIME) - (2 * speedComponent * Level.TICK_TIME);
+        }else{
+            speedComponent -= 2*speedComponent* Level.TICK_TIME;
+        }
         acceleration += (-3*acceleration*Level.TICK_TIME);
 
         getPos().x += (float) Math.cos(Math.toRadians(rotation)) * (speedComponent * Level.TICK_TIME + acceleration * Math.pow(Level.TICK_TIME, 2));
