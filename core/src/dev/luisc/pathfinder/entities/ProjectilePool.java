@@ -2,6 +2,7 @@ package dev.luisc.pathfinder.entities;
 
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import dev.luisc.pathfinder.collisions.CollisionEvent;
 
 import java.util.Stack;
 
@@ -45,6 +46,7 @@ public class ProjectilePool {
     private void refill(){
         for(int i = 0; i < PROJECTILE_NUMBER; i++){
             projectiles.add( new MovingEntity("Projectile.png", new Polygon(new float[]{4,10,4,0,0,0,0,10}), null, null));
+
         }
     }
 }

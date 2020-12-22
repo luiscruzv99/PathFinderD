@@ -50,7 +50,6 @@ public class PathfinderD extends ApplicationAdapter {
 
 		if(Gdx.input.isKeyJustPressed(Input.Keys.Q) && levelTest.getClass().getSimpleName().equals("NavigationLevel")) levelTest.placeBeacon();
 
-
 		camera.position.set(levelTest.getPlayerTest().getPos(), 0);
 
 		if(Math.abs(levelTest.getPlayerTest().getSpeedComponent()) > levelTest.getPlayerTest().MAX_SPEED/4 && camera.zoom < 1.2){
@@ -70,7 +69,7 @@ public class PathfinderD extends ApplicationAdapter {
 			levelTest.preSerialize();
 			levelTest = (NavigationLevel)LevelIOTEST.loadTest();
 			//System.out.println("Recargando nivel, el jugador o ha muerto o ha matado a las entidades");
-		};
+		}
 		levelTest.debugRender();
 
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
