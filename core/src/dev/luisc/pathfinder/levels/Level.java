@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
+import dev.luisc.pathfinder.collisions.CollisionEvent;
 import dev.luisc.pathfinder.collisions.CollisionHandler;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
@@ -23,24 +24,28 @@ import java.util.ArrayList;
 public class Level {
 
     private Polygon bounds; //Bounds of the level
-    private Texture background; //Background image of the level
+    Texture background; //Background image of the level
     private Vector2 startPoint; //Starting point of the player (May be unnecessary??)
     private String backgroundPath; //Path of the background of the level
     private SpriteBatch batch; //Image renderer
 
-    private ShapeRenderer shapeRenderer; //CollisionBox renderer(for debug)
+    ShapeRenderer renderer; //CollisionBox renderer(for debug)
 
-    private ArrayList<Entity> dumbEntities;
-    private PlayerEntity playerTest;
+    protected ArrayList<Entity> dumbEntities;
+    protected PlayerEntity playerTest;
 
     private ArrayList<Vector2> dumbEntitiesPositions;
 
-    private boolean endState; //Indicator whether the level has been completed
-    private boolean failState; //Indicator whether the player has failed the level
+    boolean endState; //Indicator whether the level has been completed
+    boolean failState; //Indicator whether the player has failed the level
 
     public static final float TICK_TIME = 0.01f; // Interval between ticks (Seconds)
     private Timer.Task t; //Tick system
-    private BitmapFont font; //UI of the ship (speed and position for now (debug))
+    BitmapFont font; //UI of the ship (speed and position for now (debug))
+
+    private CollisionEvent playerCollision;
+
+    private CollisionEvent dumbCollision;
 
     /**
      * Populates the level with the information
@@ -87,16 +92,16 @@ public class Level {
     }
 
     public ShapeRenderer debugRender(){
-        shapeRenderer.begin(ShapeRenderer.ShapeType.Line);
-        shapeRenderer.setColor(0, 0, 0, 0.0f);
+        renderer.begin(ShapeRenderer.ShapeType.Line);
+        renderer.setColor(0, 0, 0, 0.0f);
 
-        shapeRenderer.polygon(playerTest.getCollisionBox().getTransformedVertices());
-        for(Entity entity: dumbEntities) shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
-        for(Entity entity: playerTest.getProjectiles())shapeRenderer.polygon(entity.getCollisionBox().getTransformedVertices());
-        shapeRenderer.polygon(bounds.getTransformedVertices());
+        renderer.polygon(playerTest.getCollisionBox().getTransformedVertices());
+        for(Entity entity: dumbEntities) renderer.polygon(entity.getCollisionBox().getTransformedVertices());
+        for(Entity entity: playerTest.getProjectiles()) renderer.polygon(entity.getCollisionBox().getTransformedVertices());
+        renderer.polygon(bounds.getTransformedVertices());
 
-        shapeRenderer.end();
-        return shapeRenderer;
+        renderer.end();
+        return renderer;
     }
 
     private void checkCollisions(){
@@ -150,14 +155,27 @@ public class Level {
 
     public void postDeSerialize(){
         background = new Texture(backgroundPath);
+        playerCollision= new CollisionEvent() {
+            @Override
+            public void onCollision(Entity e) {
+                e.setHitPoints(0);
+            }
+        };
+        dumbCollision = new CollisionEvent() {
+            @Override
+            public void onCollision(Entity e) {
+            }
+        };
         dumbEntities = new ArrayList<>();
         for(int i = 0; i < dumbEntitiesPositions.size(); i++) {
             dumbEntities.add(new Entity("Asteroid.png", new Polygon(new float[]{9,5,9,35,40,35,40,5}), null));
             dumbEntities.get(i).setPos(dumbEntitiesPositions.get(i));
+            dumbEntities.get(i).setBehaviour(dumbCollision);
         }
         batch = new SpriteBatch();
         playerTest = new PlayerEntity(startPoint);
-        shapeRenderer = new ShapeRenderer();
+        playerTest.setBehaviour(playerCollision);
+        renderer = new ShapeRenderer();
 
         font = new BitmapFont();
         font.setColor(0,0,0,255);
@@ -186,7 +204,7 @@ public class Level {
         batch = null;
         playerTest.preSerialize();
         playerTest = null;
-        shapeRenderer = null;
+        renderer = null;
         t.cancel();
 
     }
@@ -200,7 +218,7 @@ public class Level {
     }
 
     public ShapeRenderer getDebugRenderer(){
-        return shapeRenderer;
+        return renderer;
     }
 
     protected void moveAndCollide(){

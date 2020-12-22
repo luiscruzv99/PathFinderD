@@ -4,6 +4,7 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import dev.luisc.pathfinder.collisions.CollisionEvent;
 
 /**
  * Class that controls a static entity (static obstacle in-game?)
@@ -19,6 +20,8 @@ public class Entity {
     private String spritePath;
     private int FULL_HEALTH;
     int hitPoints=2;
+
+    CollisionEvent behaviour;
 
     //Empty private constructor to prevent from doing super()
     private Entity(){}
@@ -48,7 +51,7 @@ public class Entity {
     }
 
     public void preSerialize(){
-        sprite.getTexture().dispose();
+        if(sprite != null) sprite.getTexture().dispose();
         sprite = null;
         hitPoints=FULL_HEALTH;
     }
@@ -69,7 +72,10 @@ public class Entity {
         return pos;
     }
 
-    public void collision(){
+    public void collision() {
+        if (behaviour != null)
+            behaviour.onCollision(this);
+        else
         if(hitPoints>0) hitPoints--;
     }
 
@@ -79,7 +85,7 @@ public class Entity {
     }
 
     public void levelCollision(){
-        if(hitPoints>0) hitPoints--;
+
     }
 
     public void move(){}
@@ -89,6 +95,9 @@ public class Entity {
         collisionBox.setPosition(pos.x, pos.y);
     }
 
+    public void setBehaviour(CollisionEvent collisionEvent){
+        this.behaviour = collisionEvent;
+    }
 
     public void setHitPoints(int hp){
         this.hitPoints = hp;
