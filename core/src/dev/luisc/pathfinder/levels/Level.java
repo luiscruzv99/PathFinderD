@@ -69,7 +69,7 @@ public class Level {
         batch.draw(background, 0,0);
         for(Entity entity: entities){
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
-                    entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
+                    50,50,1,1,
                     entity.getCollisionBox().getRotation());
         }
 
@@ -155,7 +155,8 @@ public class Level {
         background = new Texture(backgroundPath);
         entities = new ArrayList<>();
         for(int i = 0; i < entitiesPositions.size(); i++) {
-            entities.add(new Entity("playerTest.png", new Polygon(new float[]{0,0,0,40,50,20}), null));
+            int v = (int) (Math.random()*3)+1;
+            entities.add(new Entity("Asteroid_"+v+".png", new Polygon(new float[]{0,0,0,40,50,20}), null));
             entities.get(i).setPos(entitiesPositions.get(i));
         }
         batch = new SpriteBatch();
