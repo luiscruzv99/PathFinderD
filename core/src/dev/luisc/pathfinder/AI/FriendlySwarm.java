@@ -2,6 +2,7 @@ package dev.luisc.pathfinder.AI;
 
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.entities.AiEntity;
+import dev.luisc.pathfinder.entities.Entity;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,6 +23,10 @@ public class FriendlySwarm implements Swarm{
 
     public void setObjective(Vector2 objective){
         this.objective = objective;
+        for(AiEntity a: particles){
+            a.reset();
+        }
+        bestParticle = particles.get(0);
     }
 
 
@@ -51,5 +56,13 @@ public class FriendlySwarm implements Swarm{
 
     public ArrayList<AiEntity> getParticles() {
         return particles;
+    }
+
+    public Entity getBestParticle(){
+        return particles.get(particles.size()-1);
+    }
+
+    public Vector2 getObjective(){
+        return objective;
     }
 }

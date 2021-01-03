@@ -4,8 +4,8 @@ import com.badlogic.gdx.math.Vector2;
 
 public interface Swarm {
 
-    static final float COGNITIVE_LR = 0.5f;
-    static final float SOCIAL_LR = 0.5f;
+    static final float COGNITIVE_LR = 0.1f;
+    static final float SOCIAL_LR = 0.3f;
 
     void move();
 
