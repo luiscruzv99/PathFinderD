@@ -22,6 +22,7 @@ public class PathfinderD extends ApplicationAdapter {
 		camera.zoom = 0.8f;
 		LevelIOTEST.saveTest();
 		levelTest= (NavigationLevel)LevelIOTEST.loadTest();
+		levelTest.postDeSerialize();
 		ProjectilePool.getInstance();
 
 	}
@@ -31,31 +32,36 @@ public class PathfinderD extends ApplicationAdapter {
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
-		//TODO: MOVE THIS TO CLASS CONTROL LISTENER
-		if(Gdx.input.isKeyPressed(Input.Keys.A)){
-			levelTest.getPlayerTest().rotate(false);
-		}else if(Gdx.input.isKeyPressed(Input.Keys.D)){
-			levelTest.getPlayerTest().rotate(true);
-		}
+		if(!levelTest.isPhaseChanged()) {
+			//TODO: MOVE THIS TO CLASS CONTROL LISTENER
+			if (Gdx.input.isKeyPressed(Input.Keys.A)) {
+				levelTest.getPlayerTest().rotate(false);
+			} else if (Gdx.input.isKeyPressed(Input.Keys.D)) {
+				levelTest.getPlayerTest().rotate(true);
+			}
 
-		if(Gdx.input.isKeyPressed(Input.Keys.W)){
-			levelTest.getPlayerTest().accelerate(true);
-		}else if(Gdx.input.isKeyPressed(Input.Keys.S)){
-			levelTest.getPlayerTest().accelerate(false);
-		}
+			if (Gdx.input.isKeyPressed(Input.Keys.W)) {
+				levelTest.getPlayerTest().accelerate(true);
+			} else if (Gdx.input.isKeyPressed(Input.Keys.S)) {
+				levelTest.getPlayerTest().accelerate(false);
+			}
 
-		if(Gdx.input.isKeyPressed(Input.Keys.SPACE))levelTest.getPlayerTest().boost();
+			if (Gdx.input.isKeyPressed(Input.Keys.SPACE)) levelTest.getPlayerTest().boost();
 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.E)) levelTest.getPlayerTest().shoot();
+			if (Gdx.input.isKeyJustPressed(Input.Keys.E)) levelTest.getPlayerTest().shoot();
 
-		if(Gdx.input.isKeyJustPressed(Input.Keys.Q) && levelTest.getClass().getSimpleName().equals("NavigationLevel")) levelTest.placeBeacon();
+			if (Gdx.input.isKeyJustPressed(Input.Keys.Q) && levelTest.getClass().getSimpleName().equals("NavigationLevel"))
+				levelTest.placeBeacon();
 
-		camera.position.set(levelTest.getPlayerTest().getPos(), 0);
+			camera.position.set(levelTest.getPlayerTest().getPos(), 0);
 
-		if(Math.abs(levelTest.getPlayerTest().getSpeedComponent()) > levelTest.getPlayerTest().MAX_SPEED/4 && camera.zoom < 1.2){
-			camera.zoom += 1.33 * Gdx.graphics.getDeltaTime();
-		}else if(Math.abs(levelTest.getPlayerTest().getSpeedComponent()) < levelTest.getPlayerTest().MAX_SPEED/6 && camera.zoom > 0.8){
-			camera.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
+			if (Math.abs(levelTest.getPlayerTest().getSpeedComponent()) > levelTest.getPlayerTest().MAX_SPEED / 4 && camera.zoom < 1.2) {
+				camera.zoom += 1.33 * Gdx.graphics.getDeltaTime();
+			} else if (Math.abs(levelTest.getPlayerTest().getSpeedComponent()) < levelTest.getPlayerTest().MAX_SPEED / 6 && camera.zoom > 0.8) {
+				camera.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
+			}
+		}else{
+			camera.position.set(levelTest.getBestAlly().getPos(),0);
 		}
 
 		camera.update();

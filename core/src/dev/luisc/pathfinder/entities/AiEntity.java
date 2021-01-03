@@ -2,6 +2,7 @@ package dev.luisc.pathfinder.entities;
 
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
+import dev.luisc.pathfinder.levels.Level;
 
 public class AiEntity extends MovingEntity{
 
@@ -45,8 +46,6 @@ public class AiEntity extends MovingEntity{
 
     @Override
     public void move(){
-        if(getVel().x >= 450) getVel().x = 400;
-        if(getVel().y >= 450) getVel().y = 400;
         getCollisionBox().setRotation(getVel().angle());
         super.move();
     }
@@ -65,6 +64,12 @@ public class AiEntity extends MovingEntity{
         super.postDeSerialize();
         bestFitness = Float.MAX_VALUE;
         fitness = bestFitness;
+        bestPos = new Vector2(getPos());
+    }
+
+    public void reset(){
+        bestFitness = Float.MAX_VALUE;
+        fitness = Float.MAX_VALUE;
         bestPos = new Vector2(getPos());
     }
 }

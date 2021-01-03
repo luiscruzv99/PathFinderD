@@ -7,7 +7,6 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import dev.luisc.pathfinder.collisions.CollisionEvent;
 import dev.luisc.pathfinder.collisions.CollisionHandler;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
@@ -39,13 +38,9 @@ public class Level {
     boolean endState; //Indicator whether the level has been completed
     boolean failState; //Indicator whether the player has failed the level
 
-    public static final float TICK_TIME = 0.01f; // Interval between ticks (Seconds)
+    public static final float TICK_TIME = 0.005f; // Interval between ticks (Seconds)
     private Timer.Task t; //Tick system
     BitmapFont font; //UI of the ship (speed and position for now (debug))
-
-    private CollisionEvent playerCollision;
-
-    private CollisionEvent dumbCollision;
 
     /**
      * Populates the level with the information
@@ -104,7 +99,7 @@ public class Level {
         return renderer;
     }
 
-    private void checkCollisions(){
+    protected void checkCollisions(){
 
         for(Entity entity: dumbEntities){
             for(Entity entity1: dumbEntities){
@@ -154,27 +149,15 @@ public class Level {
     }
 
     public void postDeSerialize(){
-        background = new Texture(backgroundPath);
-        playerCollision= new CollisionEvent() {
-            @Override
-            public void onCollision(Entity e) {
-                e.setHitPoints(0);
-            }
-        };
-        dumbCollision = new CollisionEvent() {
-            @Override
-            public void onCollision(Entity e) {
-            }
-        };
         dumbEntities = new ArrayList<>();
         for(int i = 0; i < dumbEntitiesPositions.size(); i++) {
             dumbEntities.add(new Entity("Asteroid.png", new Polygon(new float[]{9,5,9,35,40,35,40,5}), null));
             dumbEntities.get(i).setPos(dumbEntitiesPositions.get(i));
-            dumbEntities.get(i).setBehaviour(dumbCollision);
         }
+        background = new Texture(backgroundPath);
+
         batch = new SpriteBatch();
         playerTest = new PlayerEntity(startPoint);
-        playerTest.setBehaviour(playerCollision);
         renderer = new ShapeRenderer();
 
         font = new BitmapFont();
