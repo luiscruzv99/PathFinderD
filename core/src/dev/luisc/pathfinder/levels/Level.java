@@ -1,5 +1,7 @@
 package dev.luisc.pathfinder.levels;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -27,6 +29,8 @@ public class Level {
     private Vector2 startPoint; //Starting point of the player (May be unnecessary??)
     private String backgroundPath; //Path of the background of the level
     private SpriteBatch batch; //Image renderer
+    private static Sound schut;
+    private static Sound explosion;
 
     ShapeRenderer renderer; //CollisionBox renderer(for debug)
 
@@ -52,6 +56,8 @@ public class Level {
         this.bounds = bounds;
         this.backgroundPath = bgPath;
         this.dumbEntities = null;
+        this.schut = Gdx.audio.newSound(Gdx.files.internal("sounds/schut.mp3"));
+        this.explosion = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.mp3"));
 
     }
 
@@ -133,6 +139,9 @@ public class Level {
             dumbEntities.remove(e);
             e.revive();
             e.preSerialize();
+        }
+        if(!deadEntities.isEmpty()){
+            explosion.play();
         }
 
         if(!playerTest.alive()) failCondition();
@@ -219,6 +228,10 @@ public class Level {
             playerTest.deSpawnProjectiles();
             aliveEntities();
         }
+    }
+
+    public static void playSchut(){
+        schut.play();
     }
 
     public Polygon getBounds() {

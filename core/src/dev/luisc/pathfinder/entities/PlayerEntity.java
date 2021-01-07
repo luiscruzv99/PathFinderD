@@ -175,6 +175,7 @@ public class PlayerEntity extends MovingEntity {
         e.setHitPoints(1);
         //Add to the shot projectiles
         projectiles.add(e);
+        Level.playSchut();
     }
 
     public ArrayList<Entity> getProjectiles() {
