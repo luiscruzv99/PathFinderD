@@ -69,7 +69,7 @@ public class Level {
         batch.draw(background, 0,0);
         for(Entity entity: entities){
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
-                    50,50,1,1,
+                    entity.getCollisionBox().getBoundingRectangle().getWidth(),entity.getCollisionBox().getBoundingRectangle().getHeight(),1,1,
                     entity.getCollisionBox().getRotation());
         }
 
@@ -106,7 +106,7 @@ public class Level {
 
         for(Entity entity: entities){
             for(Entity entity1: entities){
-                if(!entity.equals(entity1)) CollisionHandler.isCollidingEntity(entity, entity1);
+               // if(!entity.equals(entity1)) CollisionHandler.isCollidingEntity(entity, entity1);
             }
         }
 
@@ -155,8 +155,8 @@ public class Level {
         background = new Texture(backgroundPath);
         entities = new ArrayList<>();
         for(int i = 0; i < entitiesPositions.size(); i++) {
-            int v = (int) (Math.random()*3)+1;
-            entities.add(new Entity("Asteroid_"+v+".png", new Polygon(new float[]{0,0,0,40,50,20}), null));
+            int v = (int) (Math.random()*2)+2;
+            entities.add(new Entity("Asteroid_"+v+".png", new Polygon(new float[]{0,20,0,130,20,150,120,150,140,130,140,20,120,0,20,0}), null));
             entities.get(i).setPos(entitiesPositions.get(i));
         }
         batch = new SpriteBatch();

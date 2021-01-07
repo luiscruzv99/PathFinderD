@@ -38,7 +38,7 @@ public class LevelIOTEST {
 
         ArrayList<Vector2> entities= new ArrayList<>();
         for(int i=0; i<10; i++){
-            entities.add(new Vector2(i*100+2500, i*100*(float)Math.random()+400));
+            entities.add(new Vector2(i*150+2500, i*150*(float)Math.random()+400));
         }
         Level lev = new Level(entities, new Vector2(1000,1000),new Polygon(new float[]{800,400,800,4600,4200,4600,4200,400}),"bgTest.png");
         //lev.preSerialize();
