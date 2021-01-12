@@ -26,6 +26,8 @@ public class MovingEntity extends Entity {
     public MovingEntity(String spritePath, Polygon polygon, Vector2 pos, Vector2 vel){
         super(spritePath, polygon, pos);
         this.vel = new Vector2();
+        if(vel != null) this.vel = vel;
+
 
     }
 
@@ -35,10 +37,11 @@ public class MovingEntity extends Entity {
     @Override
     public void move(){
 
-        getPos().x += vel.x * Level.TICK_TIME;
-        getPos().y += vel.y * Level.TICK_TIME;
+        getPos().x = getPos().x + (vel.x * Level.TICK_TIME);
+        getPos().y = getPos().y + (vel.y * Level.TICK_TIME);
 
         getCollisionBox().setPosition(getPos().x, getPos().y);
+
     }
 
     public void setVel(Vector2 vel){
@@ -51,5 +54,7 @@ public class MovingEntity extends Entity {
     public Vector2 getVel(){
         return vel;
     }
+
+
 
 }

@@ -35,7 +35,8 @@ public class Entity {
         this.pos=pos;
         hitPoints=2;
         FULL_HEALTH = hitPoints;
-        postDeSerialize();
+        if(spritePath != null)
+            postDeSerialize();
     }
 
     /**
@@ -47,7 +48,7 @@ public class Entity {
     }
 
     public void preSerialize(){
-        sprite.getTexture().dispose();
+        if(sprite != null) sprite.getTexture().dispose();
         sprite = null;
         hitPoints=FULL_HEALTH;
     }
@@ -68,7 +69,7 @@ public class Entity {
         return pos;
     }
 
-    public void collision(){
+    public void collision() {
         if(hitPoints>0) hitPoints--;
     }
 
@@ -78,7 +79,7 @@ public class Entity {
     }
 
     public void levelCollision(){
-        if(hitPoints>0) hitPoints--;
+
     }
 
     public void move(){}
@@ -88,8 +89,11 @@ public class Entity {
         collisionBox.setPosition(pos.x, pos.y);
     }
 
-
     public void setHitPoints(int hp){
         this.hitPoints = hp;
+    }
+
+    public int getHitPoints(){
+        return hitPoints;
     }
 }

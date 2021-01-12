@@ -45,6 +45,7 @@ public class ProjectilePool {
     private void refill(){
         for(int i = 0; i < PROJECTILE_NUMBER; i++){
             projectiles.add( new MovingEntity("Projectile.png", new Polygon(new float[]{4,10,4,0,0,0,0,10}), null, null));
+
         }
     }
 }
