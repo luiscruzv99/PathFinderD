@@ -72,7 +72,7 @@ public class Level {
         batch.draw(background, 0,0);
         for(Entity entity: dumbEntities){
             batch.draw(entity.getSprite(), entity.getPos().x, entity.getPos().y,0,0,
-                    entity.getSprite().getWidth(), entity.getSprite().getHeight(),1,1,
+                    entity.getCollisionBox().getBoundingRectangle().getWidth(),entity.getCollisionBox().getBoundingRectangle().getHeight(),1,1,
                     entity.getCollisionBox().getRotation());
         }
 
@@ -109,7 +109,7 @@ public class Level {
 
         for(Entity entity: dumbEntities){
             for(Entity entity1: dumbEntities){
-                if(!entity.equals(entity1)) CollisionHandler.isCollidingEntity(entity, entity1);
+               // if(!entity.equals(entity1)) CollisionHandler.isCollidingEntity(entity, entity1);
             }
         }
 
@@ -160,11 +160,13 @@ public class Level {
     public void postDeSerialize(){
         dumbEntities = new ArrayList<>();
         for(int i = 0; i < dumbEntitiesPositions.size(); i++) {
-            dumbEntities.add(new Entity("Asteroid.png", new Polygon(new float[]{9,5,9,35,40,35,40,5}), null));
+            int v = (int) (Math.random()*2)+2;
+            dumbEntities.add(new Entity("Asteroid_"+v+".png", new Polygon(new float[]{0,20,0,130,20,150,120,150,140,130,140,20,120,0,20,0}), null));
             dumbEntities.get(i).setPos(dumbEntitiesPositions.get(i));
         }
         background = new Texture(backgroundPath);
 
+            
         batch = new SpriteBatch();
         playerTest = new PlayerEntity(startPoint);
         renderer = new ShapeRenderer();

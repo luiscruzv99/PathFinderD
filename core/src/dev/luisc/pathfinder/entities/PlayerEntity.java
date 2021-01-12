@@ -34,7 +34,7 @@ public class PlayerEntity extends MovingEntity {
      */
     public PlayerEntity(Vector2 pos) {
 
-        super("playerTest.png" , new Polygon(new float[]{
+        super("PD_Player_Ship.png" , new Polygon(new float[]{
                 0,0,
                 0,40,
                 50,20}),pos, new Vector2(0,0));

@@ -40,7 +40,7 @@ public class LevelIOTEST {
 
         ArrayList<Vector2> entities= new ArrayList<>();
         for(int i=0; i<10; i++){
-            entities.add(new Vector2(i*100+2500, i*100*(float)Math.random()+400));
+            entities.add(new Vector2(i*150+2500, i*150*(float)Math.random()+400));
         }
         ArrayList<Vector2> allies = new ArrayList<>();
         for(int i = 0; i<5; i++){
