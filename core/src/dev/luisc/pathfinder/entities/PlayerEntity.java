@@ -198,4 +198,8 @@ public class PlayerEntity extends MovingEntity {
         acceleration = 0;
         speedComponent = 0;
     }
+
+    public void resetRotation(){
+        rotation = 0;
+    }
 }

@@ -1,11 +1,13 @@
 package dev.luisc.pathfinder.levels;
 
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.AI.FriendlySwarm;
-import dev.luisc.pathfinder.collisions.CollisionHandler;
+import dev.luisc.pathfinder.handlers.CollisionHandler;
 import dev.luisc.pathfinder.entities.AiEntity;
 import dev.luisc.pathfinder.entities.Entity;
 
@@ -24,6 +26,7 @@ public class NavigationLevel extends Level{
 
     private ArrayList<Vector2> allyPositions;
     private ArrayList<AiEntity> allies;
+    private ArrayList<AiEntity> deadAllies;
 
     private int timer = 0;
     private int maxBeacons = 10;
@@ -47,10 +50,43 @@ public class NavigationLevel extends Level{
     }
 
     @Override
-    public boolean render(){
+    public void reset(){
 
-        super.render();
+        super.reset();
+
+        //Reset allies
+        for(AiEntity a: deadAllies)
+            allies.add(a);
+
+        deadAllies.clear();
+
+        for(int i = 0; i < allyPositions.size(); i++) {
+           allies.get(i).setPos(allyPositions.get(i));
+           allies.get(i).reset();
+           allies.get(i).revive();
+        }
+
+        allySwarm = new FriendlySwarm(allies);
+
+        allySwarm.setObjective(goal.getPos());
+        //Reset beacons
+        nextBeacon = goal;
+
+        beacons.clear();
+    }
+
+
+    @Override
+    public RenderClass render(OrthographicCamera c){
+
+        super.render(c);
         SpriteBatch batch = getBatch();
+        if(phaseChanged) {
+            c.position.set(getBestAlly().getPos(), 0);
+            c.update();
+            batch.setProjectionMatrix(c.combined);
+        }
+
         batch.begin();
 
         for(AiEntity e: allies){
@@ -76,7 +112,10 @@ public class NavigationLevel extends Level{
 
         batch.end();
         phaseChanged = false;
-        return endState || failState;
+
+
+
+        return this;
     }
 
 
@@ -130,6 +169,7 @@ public class NavigationLevel extends Level{
         goal.postDeSerialize();
         allySwarm.setObjective(goal.getPos());
         renderer = new ShapeRenderer();
+        deadAllies = new ArrayList<>();
 
     }
 
@@ -201,13 +241,11 @@ public class NavigationLevel extends Level{
 
     @Override
     protected void aliveEntities(){
-        ArrayList<Entity> deadEntities = new ArrayList<>();
 
         if(allies != null){
-        for(Entity entity: allies) {
-            if (!entity.alive()) {
-                System.out.println("Entidad: " + allies.indexOf(entity) + "murio");
-                deadEntities.add(entity);
+        for(AiEntity a: allies) {
+            if (!a.alive()) {
+                deadAllies.add(a);
             }
         }
         }
@@ -216,11 +254,9 @@ public class NavigationLevel extends Level{
             nextBeacon.preSerialize();
             nextBeacon = null;
         }
-        for(Entity e: deadEntities){
+        for(AiEntity e: deadAllies){
             allySwarm.getParticles().remove(e);
             allies.remove(e);
-            e.revive();
-            e.preSerialize();
         }
 
         super.aliveEntities();

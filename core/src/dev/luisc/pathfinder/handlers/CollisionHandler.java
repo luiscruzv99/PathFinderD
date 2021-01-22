@@ -1,4 +1,4 @@
-package dev.luisc.pathfinder.collisions;
+package dev.luisc.pathfinder.handlers;
 
 
 import com.badlogic.gdx.math.Intersector;
@@ -7,7 +7,6 @@ import dev.luisc.pathfinder.entities.Entity;
 
 public class CollisionHandler {
 
-    //TODO: There's some bugs in this method, kills everything whether in contact or not
     public static void isCollidingEntity(Entity e1, Entity e2){
         if(Intersector.overlapConvexPolygons(e1.getCollisionBox(),e2.getCollisionBox())){
             e1.collision();
