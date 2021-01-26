@@ -48,7 +48,7 @@ public class Level implements RenderClass{
 
     boolean endState; //Indicator whether the level has been completed
 
-    public static final float TICK_TIME = 0.005f; // Interval between ticks (Seconds)
+    public static final float TICK_TIME = 0.01f; // Interval between ticks (Seconds)
     private Timer.Task t; //Tick system
     BitmapFont font; //UI of the ship (speed and position for now (debug))
 
@@ -79,10 +79,8 @@ public class Level implements RenderClass{
             dumbEntities.get(i).revive();
         }
 
-        playerTest.revive();
         playerTest.setPos(startPoint.cpy());
-        playerTest.fullStop();
-        playerTest.resetRotation();
+        playerTest.reset();
     }
 
     /**
@@ -93,13 +91,7 @@ public class Level implements RenderClass{
     @Override
     public RenderClass render(OrthographicCamera c) {
 
-        c.position.set(playerTest.getPos(), 0);
-
-        if (Math.abs(playerTest.getSpeedComponent()) > playerTest.MAX_SPEED / 4 && c.zoom < 1.2) {
-            c.zoom += 1.33 * Gdx.graphics.getDeltaTime();
-        } else if (Math.abs(playerTest.getSpeedComponent()) < playerTest.MAX_SPEED / 6 && c.zoom > 0.8) {
-            c.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
-        }
+        moveCamera(c);
 
         c.update();
         batch.setProjectionMatrix(c.combined);
@@ -129,6 +121,17 @@ public class Level implements RenderClass{
         debugRender();
 
         return this;
+    }
+
+    public void moveCamera(OrthographicCamera c){
+        c.position.set(playerTest.getPos(), 0);
+
+        if (Math.abs(playerTest.getSpeedComponent()) > playerTest.MAX_SPEED / 4 && c.zoom < 1.2) {
+            c.zoom += 1.33 * Gdx.graphics.getDeltaTime();
+        } else if (Math.abs(playerTest.getSpeedComponent()) < playerTest.MAX_SPEED / 6 && c.zoom > 0.8) {
+            c.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
+        }
+
     }
 
     public ShapeRenderer debugRender(){
@@ -164,18 +167,13 @@ public class Level implements RenderClass{
 
         for(Entity entity: dumbEntities) 
             if (!entity.alive()) {
-
+                explosion.play();
                 deadEntities.add(entity);
             }
-        
-
 
         for(Entity e: deadEntities)
             dumbEntities.remove(e);
-        
-        
-        if(!deadEntities.isEmpty())
-            explosion.play();
+
 
         if(!playerTest.alive()) failCondition();
     }
@@ -191,6 +189,7 @@ public class Level implements RenderClass{
     }
 
     public void postDeSerialize(){
+
         dumbEntities = new ArrayList<>();
         for(int i = 0; i < dumbEntitiesPositions.size(); i++) {
             int v = (int) (Math.random()*2)+2;

@@ -199,7 +199,10 @@ public class PlayerEntity extends MovingEntity {
         speedComponent = 0;
     }
 
-    public void resetRotation(){
+    public void reset(){
         rotation = 0;
+        fullStop();
+        revive();
+        beaconsPlaced = 0;
     }
 }

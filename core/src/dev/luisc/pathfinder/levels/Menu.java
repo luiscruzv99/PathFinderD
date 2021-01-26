@@ -31,7 +31,7 @@ public class Menu implements RenderClass{
         //Initialize button
         b1=new Texture("button1Test.png");
         //Initialize background
-        backgorund = new Texture("bgTest.png");
+        backgorund = new Texture("menu_background.png");
 
         batch = new SpriteBatch();
 

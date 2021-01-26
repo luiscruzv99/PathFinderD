@@ -47,7 +47,7 @@ public class LevelIOTEST {
             allies.add(new Vector2(1500+i*50, 900));
         }
         NavigationLevel lev = new NavigationLevel(entities, new Vector2(1000,1000),new Polygon(new float[]{800,400,800,4600,4200,4600,4200,400}),
-                "bgTest.png",allies, new Vector2(3000,3000), 100);
+                "background_v1.png",allies, new Vector2(3000,3000), 100);
         //lev.preSerialize();
 
         try(Writer writer = new FileWriter(System.getProperty("user.home")+"\\AppData\\Roaming\\.pathfinder\\levelData\\levelTest.json")){

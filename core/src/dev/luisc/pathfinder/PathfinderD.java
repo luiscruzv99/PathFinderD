@@ -23,7 +23,7 @@ public class PathfinderD extends ApplicationAdapter {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.zoom = 0.8f;
-		//LevelIOTEST.saveTest();
+		LevelIOTEST.saveTest();
 
 		ProjectilePool.getInstance();
 		menu = new Menu();
