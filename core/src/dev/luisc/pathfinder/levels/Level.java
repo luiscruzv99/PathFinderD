@@ -261,7 +261,8 @@ public class Level implements RenderClass{
     }
 
     protected void moveAndCollide(){
-        InputHandler.listenInputs();
+
+        this.listenInputs();
 
         if(playerTest != null) {
             for (Entity entity : dumbEntities) {
@@ -279,6 +280,9 @@ public class Level implements RenderClass{
         }
     }
 
+    protected void listenInputs(){
+        InputHandler.listenInputs();
+    }
     public static void playSchut(){
         schut.play();
     }

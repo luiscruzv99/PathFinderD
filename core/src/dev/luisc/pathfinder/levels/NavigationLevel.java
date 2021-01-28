@@ -11,6 +11,7 @@ import dev.luisc.pathfinder.AI.FriendlySwarm;
 import dev.luisc.pathfinder.handlers.CollisionHandler;
 import dev.luisc.pathfinder.entities.AiEntity;
 import dev.luisc.pathfinder.entities.Entity;
+import dev.luisc.pathfinder.handlers.InputHandler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -250,6 +251,11 @@ public class NavigationLevel extends Level{
             allySwarm.move();
         }
         timer++;
+    }
+
+    @Override
+    protected void listenInputs(){
+        if(!phaseChanged) InputHandler.listenInputs();
     }
 
     @Override

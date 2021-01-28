@@ -25,11 +25,11 @@ public class Menu implements RenderClass{
 
     public Menu(){
 
-        banner = new Texture("bannerTest.png");
+        banner = new Texture("banner.png");
         //Initialize button
-        b2=new Texture("button1Test.png");
+        b2=new Texture("button1.png");
         //Initialize button
-        b1=new Texture("button1Test.png");
+        b1=new Texture("button2.png");
         //Initialize background
         backgorund = new Texture("menu_background.png");
 
