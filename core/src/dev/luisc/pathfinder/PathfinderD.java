@@ -6,16 +6,14 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import dev.luisc.pathfinder.entities.ProjectilePool;
-import dev.luisc.pathfinder.levels.Level;
-import dev.luisc.pathfinder.levels.Menu;
-import dev.luisc.pathfinder.levels.NavigationLevel;
-import dev.luisc.pathfinder.levels.RenderClass;
+import dev.luisc.pathfinder.levels.*;
 
 public class PathfinderD extends ApplicationAdapter {
 
 	NavigationLevel levelTest;
 	OrthographicCamera camera;
-	Menu menu;
+	//Menu menu;
+	Cinematic c;
 	RenderClass renderObject;
 
 	@Override
@@ -27,14 +25,15 @@ public class PathfinderD extends ApplicationAdapter {
 		LevelIOTEST.saveTest();
 
 		ProjectilePool.getInstance();
-		menu = new Menu();
-		renderObject = menu;
+		//menu = new Menu();
+		c = new Cinematic();
+		renderObject = c;
 
 	}
 
 	@Override
 	public void render () {
-		Gdx.gl.glClearColor(255, 255, 255, 1);
+		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
 		renderObject = renderObject.render(this.camera);
