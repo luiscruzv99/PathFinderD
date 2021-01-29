@@ -22,6 +22,7 @@ public class PlayerEntity extends MovingEntity {
 
     public static final float MAX_SPEED = 750.0f; //Max speed of the player (px/s)
     private int timer = 0;
+    private int shut = 0;
 
     private int beaconsPlaced = 0;
 
@@ -66,7 +67,7 @@ public class PlayerEntity extends MovingEntity {
      */
     public void accelerate(boolean direction){
         if(direction && (speedComponent < MAX_SPEED))
-            acceleration += MAX_SPEED;
+            acceleration += MAX_SPEED / 3;
         else
             if(speedComponent > -MAX_SPEED/1.5 )acceleration -= MAX_SPEED/4;
 
@@ -127,6 +128,7 @@ public class PlayerEntity extends MovingEntity {
 
         getCollisionBox().setPosition(getPos().x, getPos().y);
         timer++;
+        shut--;
 
     }
 
@@ -155,6 +157,7 @@ public class PlayerEntity extends MovingEntity {
     }
 
     public void shoot(){
+        if(shut > 0) return;
 
         float direction = getRotation(); //Get the direction the player's facing
         float speed = 1500; //Set a fixed speed of 1500 px/s
@@ -176,6 +179,7 @@ public class PlayerEntity extends MovingEntity {
         //Add to the shot projectiles
         projectiles.add(e);
         Level.playSchut();
+        shut = 50; //TODO: MAKE THIS DEPENDENT ON IN GANE TICK SYSTEM
     }
 
     public ArrayList<Entity> getProjectiles() {
@@ -197,5 +201,12 @@ public class PlayerEntity extends MovingEntity {
     public void fullStop(){
         acceleration = 0;
         speedComponent = 0;
+    }
+
+    public void reset(){
+        rotation = 0;
+        fullStop();
+        revive();
+        beaconsPlaced = 0;
     }
 }

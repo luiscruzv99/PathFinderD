@@ -1,13 +1,17 @@
 package dev.luisc.pathfinder.levels;
 
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.AI.FriendlySwarm;
-import dev.luisc.pathfinder.collisions.CollisionHandler;
+import dev.luisc.pathfinder.handlers.CollisionHandler;
 import dev.luisc.pathfinder.entities.AiEntity;
 import dev.luisc.pathfinder.entities.Entity;
+import dev.luisc.pathfinder.handlers.InputHandler;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -24,6 +28,7 @@ public class NavigationLevel extends Level{
 
     private ArrayList<Vector2> allyPositions;
     private ArrayList<AiEntity> allies;
+    private ArrayList<AiEntity> deadAllies;
 
     private int timer = 0;
     private int maxBeacons = 10;
@@ -47,38 +52,86 @@ public class NavigationLevel extends Level{
     }
 
     @Override
-    public boolean render(){
+    public void reset(){
 
-        super.render();
+        super.reset();
+
+        //Reset allies
+        for(AiEntity a: deadAllies)
+            allies.add(a);
+
+        deadAllies.clear();
+
+        for(int i = 0; i < allyPositions.size(); i++) {
+           allies.get(i).setPos(allyPositions.get(i));
+           allies.get(i).reset();
+           allies.get(i).revive();
+        }
+
+        allySwarm = new FriendlySwarm(allies);
+
+        allySwarm.setObjective(goal.getPos());
+        //Reset beacons
+        nextBeacon = goal;
+
+        beacons.clear();
+    }
+
+
+    @Override
+    public RenderClass render(OrthographicCamera c){
+
+        super.render(c);
         SpriteBatch batch = getBatch();
-        batch.begin();
 
+        c.update();
+        batch.setProjectionMatrix(c.combined);
+        renderer.setProjectionMatrix(c.combined);
+
+        batch.begin();
         for(AiEntity e: allies){
             batch.draw(e.getSprite(), e.getPos().x, e.getPos().y,0,0,
-                    e.getSprite().getWidth(), e.getSprite().getHeight(),1,1,
+                    50, 50,1,1,
                     e.getCollisionBox().getRotation());
         }
 
         if(!beacons.isEmpty()){
             for(Entity e: beacons){
                 batch.draw(e.getSprite(), e.getPos().x, e.getPos().y,0,0,
-                        e.getSprite().getWidth(), e.getSprite().getHeight(),1,1,
+                       50,50,1,1,
                         e.getCollisionBox().getRotation());
             }
         }
         if(!(nextBeacon == null)){
             batch.draw(nextBeacon.getSprite(), nextBeacon.getPos().x, nextBeacon.getPos().y,0,0,
-                    nextBeacon.getSprite().getWidth(), nextBeacon.getSprite().getHeight(),1,1,
+                   50,50,1,1,
                     nextBeacon.getCollisionBox().getRotation());
         }
 
-        batch.draw(goal.getSprite(),goal.getPos().x, goal.getPos().y);
+        batch.draw(goal.getSprite(),goal.getPos().x, goal.getPos().y, 0, 0, 50, 50, 1,1,0);
 
         batch.end();
         phaseChanged = false;
-        return endState || failState;
+
+        return this;
     }
 
+    @Override
+    public void moveCamera(OrthographicCamera c){
+
+        if(phaseChanged) {
+            c.position.set(getBestAlly().getPos(), 0);
+        }else{
+            c.position.set(playerTest.getPos(), 0);
+
+            if (Math.abs(playerTest.getSpeedComponent()) > playerTest.MAX_SPEED / 4 && c.zoom < 1.2) {
+                c.zoom += 1.33 * Gdx.graphics.getDeltaTime();
+            } else if (Math.abs(playerTest.getSpeedComponent()) < playerTest.MAX_SPEED / 6 && c.zoom > 0.8) {
+                c.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
+            }
+        }
+
+    }
 
     @Override
     public ShapeRenderer debugRender(){
@@ -122,7 +175,7 @@ public class NavigationLevel extends Level{
         super.postDeSerialize();
         allies = new ArrayList<>();
         for(int  i = 0; i < allyPositions.size(); i++){
-            allies.add(new AiEntity("AIShip.png", new Polygon(new float[]{0,0,0,40,50,20}), allyPositions.get(i), new Vector2((float)Math.random()*100, (float)Math.random()*100)));
+            allies.add(new AiEntity("Ai_ship.png", new Polygon(new float[]{0,20,50,0,50,40}), allyPositions.get(i), new Vector2((float)Math.random()*100, (float)Math.random()*100)));
         }
         beacons = new LinkedList<>() ;
         nextBeacon = null;
@@ -130,6 +183,7 @@ public class NavigationLevel extends Level{
         goal.postDeSerialize();
         allySwarm.setObjective(goal.getPos());
         renderer = new ShapeRenderer();
+        deadAllies = new ArrayList<>();
 
     }
 
@@ -200,14 +254,17 @@ public class NavigationLevel extends Level{
     }
 
     @Override
+    protected void listenInputs(){
+        if(!phaseChanged) InputHandler.listenInputs();
+    }
+
+    @Override
     protected void aliveEntities(){
-        ArrayList<Entity> deadEntities = new ArrayList<>();
 
         if(allies != null){
-        for(Entity entity: allies) {
-            if (!entity.alive()) {
-                System.out.println("Entidad: " + allies.indexOf(entity) + "murio");
-                deadEntities.add(entity);
+        for(AiEntity a: allies) {
+            if (!a.alive()) {
+                deadAllies.add(a);
             }
         }
         }
@@ -216,11 +273,9 @@ public class NavigationLevel extends Level{
             nextBeacon.preSerialize();
             nextBeacon = null;
         }
-        for(Entity e: deadEntities){
+        for(AiEntity e: deadAllies){
             allySwarm.getParticles().remove(e);
             allies.remove(e);
-            e.revive();
-            e.preSerialize();
         }
 
         super.aliveEntities();

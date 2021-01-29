@@ -81,7 +81,7 @@ public class Entity {
     }
 
     public void levelCollision(){
-
+        hitPoints = 0;
     }
 
     public void move(){}

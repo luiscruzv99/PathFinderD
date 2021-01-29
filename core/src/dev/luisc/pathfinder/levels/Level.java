@@ -2,6 +2,8 @@ package dev.luisc.pathfinder.levels;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Camera;
+import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
@@ -9,9 +11,12 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.badlogic.gdx.utils.Timer;
-import dev.luisc.pathfinder.collisions.CollisionHandler;
+import dev.luisc.pathfinder.entities.MovingEntity;
+import dev.luisc.pathfinder.entities.ProjectilePool;
+import dev.luisc.pathfinder.handlers.CollisionHandler;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.PlayerEntity;
+import dev.luisc.pathfinder.handlers.InputHandler;
 
 import java.util.ArrayList;
 
@@ -22,7 +27,7 @@ import java.util.ArrayList;
  * @author Luis
  * @version 10-11-2020
  */
-public class Level {
+public class Level implements RenderClass{
 
     private Polygon bounds; //Bounds of the level
     Texture background; //Background image of the level
@@ -35,14 +40,15 @@ public class Level {
     ShapeRenderer renderer; //CollisionBox renderer(for debug)
 
     protected ArrayList<Entity> dumbEntities;
+    protected ArrayList<MovingEntity> projectiles;
+    protected ArrayList<Entity> deadEntities;
     protected PlayerEntity playerTest;
 
     private ArrayList<Vector2> dumbEntitiesPositions;
 
     boolean endState; //Indicator whether the level has been completed
-    boolean failState; //Indicator whether the player has failed the level
 
-    public static final float TICK_TIME = 0.005f; // Interval between ticks (Seconds)
+    public static final float TICK_TIME = 0.01f; // Interval between ticks (Seconds)
     private Timer.Task t; //Tick system
     BitmapFont font; //UI of the ship (speed and position for now (debug))
 
@@ -56,9 +62,25 @@ public class Level {
         this.bounds = bounds;
         this.backgroundPath = bgPath;
         this.dumbEntities = null;
-        this.schut = Gdx.audio.newSound(Gdx.files.internal("sounds/schut.mp3"));
-        this.explosion = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.mp3"));
 
+
+    }
+
+    public void reset(){
+
+
+        for(int i = 0; i < deadEntities.size(); i++){
+            dumbEntities.add(deadEntities.get(i));
+        }
+        deadEntities.clear();
+
+        for(int i = 0; i < dumbEntitiesPositions.size(); i++){
+            dumbEntities.get(i).setPos(dumbEntitiesPositions.get(i));
+            dumbEntities.get(i).revive();
+        }
+
+        playerTest.setPos(startPoint.cpy());
+        playerTest.reset();
     }
 
     /**
@@ -66,7 +88,14 @@ public class Level {
      * code from the main render (Maybe not a good idea...)
      * @return whether the level has been completed, thus ending the render
      */
-    public boolean render() {
+    @Override
+    public RenderClass render(OrthographicCamera c) {
+
+        moveCamera(c);
+
+        c.update();
+        batch.setProjectionMatrix(c.combined);
+        renderer.setProjectionMatrix(c.combined);
 
         batch.begin();
         batch.draw(background, 0,0);
@@ -89,7 +118,20 @@ public class Level {
         font.draw(batch, Integer.toString(playerTest.getBeaconsPlaced()), playerTest.getPos().x-20, playerTest.getPos().y+75);
         batch.end();
 
-        return endState || failState;
+        debugRender();
+
+        return this;
+    }
+
+    public void moveCamera(OrthographicCamera c){
+        c.position.set(playerTest.getPos(), 0);
+
+        if (Math.abs(playerTest.getSpeedComponent()) > playerTest.MAX_SPEED / 4 && c.zoom < 1.2) {
+            c.zoom += 1.33 * Gdx.graphics.getDeltaTime();
+        } else if (Math.abs(playerTest.getSpeedComponent()) < playerTest.MAX_SPEED / 6 && c.zoom > 0.8) {
+            c.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
+        }
+
     }
 
     public ShapeRenderer debugRender(){
@@ -106,17 +148,12 @@ public class Level {
     }
 
     protected void checkCollisions(){
-
-        for(Entity entity: dumbEntities){
-            for(Entity entity1: dumbEntities){
-               // if(!entity.equals(entity1)) CollisionHandler.isCollidingEntity(entity, entity1);
-            }
-        }
+        
 
         for(Entity e: dumbEntities){
-            for(Entity e1: playerTest.getProjectiles()){
-                CollisionHandler.isCollidingEntity(e,e1);
-                CollisionHandler.isCollidingLevel(e1, bounds);
+            for(Entity p: playerTest.getProjectiles()){
+                CollisionHandler.isCollidingEntity(e,p);
+                CollisionHandler.isCollidingLevel(p, bounds);
             }
             CollisionHandler.isCollidingEntity(playerTest, e);
         }
@@ -126,23 +163,17 @@ public class Level {
     }
 
     protected void aliveEntities(){
-        ArrayList<Entity> deadEntities = new ArrayList<>();
 
-        for(Entity entity: dumbEntities) {
+
+        for(Entity entity: dumbEntities) 
             if (!entity.alive()) {
-                System.out.println("Entidad: " + dumbEntities.indexOf(entity) + "murio");
+                explosion.play();
                 deadEntities.add(entity);
             }
-        }
 
-        for(Entity e: deadEntities){
+        for(Entity e: deadEntities)
             dumbEntities.remove(e);
-            e.revive();
-            e.preSerialize();
-        }
-        if(!deadEntities.isEmpty()){
-            explosion.play();
-        }
+
 
         if(!playerTest.alive()) failCondition();
     }
@@ -154,10 +185,11 @@ public class Level {
      * changes the failState variable
      */
     private void failCondition() {
-        failState = true;
+        reset();
     }
 
     public void postDeSerialize(){
+
         dumbEntities = new ArrayList<>();
         for(int i = 0; i < dumbEntitiesPositions.size(); i++) {
             int v = (int) (Math.random()*2)+2;
@@ -166,10 +198,14 @@ public class Level {
         }
         background = new Texture(backgroundPath);
 
-            
         batch = new SpriteBatch();
-        playerTest = new PlayerEntity(startPoint);
+        playerTest = new PlayerEntity(startPoint.cpy());
+        playerTest.revive();
+        playerTest.postDeSerialize();
         renderer = new ShapeRenderer();
+
+        this.schut = Gdx.audio.newSound(Gdx.files.internal("sounds/schut.mp3"));
+        this.explosion = Gdx.audio.newSound(Gdx.files.internal("sounds/explosion.mp3"));
 
         font = new BitmapFont();
         font.setColor(0,0,0,255);
@@ -184,6 +220,12 @@ public class Level {
             }
         };
         Timer.schedule(t,TICK_TIME,TICK_TIME);
+
+        deadEntities = new ArrayList<>();
+        projectiles = new ArrayList<>();
+
+        InputHandler.getInstance().setLevel(this);
+        InputHandler.getInstance().setPlayer(playerTest);
     }
 
     public void preSerialize(){
@@ -200,6 +242,9 @@ public class Level {
         playerTest = null;
         renderer = null;
         t.cancel();
+        t = null;
+        this.schut.dispose();
+        this.explosion.dispose();
 
     }
 
@@ -216,6 +261,9 @@ public class Level {
     }
 
     protected void moveAndCollide(){
+
+        this.listenInputs();
+
         if(playerTest != null) {
             for (Entity entity : dumbEntities) {
                 entity.move();
@@ -232,6 +280,9 @@ public class Level {
         }
     }
 
+    protected void listenInputs(){
+        InputHandler.listenInputs();
+    }
     public static void playSchut(){
         schut.play();
     }
