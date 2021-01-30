@@ -71,5 +71,6 @@ public class AiEntity extends MovingEntity{
         bestFitness = Float.MAX_VALUE;
         fitness = Float.MAX_VALUE;
         bestPos = new Vector2(getPos());
+        getCollisionBox().setRotation(0);
     }
 }

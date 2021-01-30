@@ -54,8 +54,6 @@ public class NavigationLevel extends Level{
     @Override
     public void reset(){
 
-        super.reset();
-
         //Reset allies
         for(AiEntity a: deadAllies)
             allies.add(a);
@@ -63,7 +61,7 @@ public class NavigationLevel extends Level{
         deadAllies.clear();
 
         for(int i = 0; i < allyPositions.size(); i++) {
-           allies.get(i).setPos(allyPositions.get(i));
+           allies.get(i).setPos(allyPositions.get(i).cpy());
            allies.get(i).reset();
            allies.get(i).revive();
         }
@@ -72,9 +70,11 @@ public class NavigationLevel extends Level{
 
         allySwarm.setObjective(goal.getPos());
         //Reset beacons
-        nextBeacon = goal;
+        nextBeacon = null;
 
         beacons.clear();
+
+        super.reset();
     }
 
 
@@ -175,7 +175,7 @@ public class NavigationLevel extends Level{
         super.postDeSerialize();
         allies = new ArrayList<>();
         for(int  i = 0; i < allyPositions.size(); i++){
-            allies.add(new AiEntity("Ai_ship.png", new Polygon(new float[]{0,20,50,0,50,40}), allyPositions.get(i), new Vector2((float)Math.random()*100, (float)Math.random()*100)));
+            allies.add(new AiEntity("Ai_ship.png", new Polygon(new float[]{0,20,50,0,50,40}), allyPositions.get(i).cpy(), new Vector2((float)Math.random()*100, (float)Math.random()*100)));
         }
         beacons = new LinkedList<>() ;
         nextBeacon = null;
