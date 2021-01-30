@@ -35,7 +35,6 @@ public class Scene2 implements RenderClass {
                 new Polygon(new float[]{0f,0f,0f,1f,1f,1f,1f,0f}),
                 new Vector2(250,250), new Vector2(180,60));
         font = new BitmapFont(Gdx.files.internal("fonts/testFont.fnt"), Gdx.files.internal("fonts/testFont.png"), false);
-        font.setColor(255,255,255,255);
         message = "In hopes of finding a better future somewhere else,\nthousands of people headed to outer space...";
     }
 
@@ -45,7 +44,14 @@ public class Scene2 implements RenderClass {
     @Override
     public RenderClass render(OrthographicCamera c) {
         //In this scene I dont move the camera
-        batch.setColor(1f,1f,1f, currentFrame/20.0f);
+        if(currentFrame < frames/2){
+            batch.setColor(1f,1f,1f, currentFrame/20.0f);
+            font.setColor(1f,1f,1f,currentFrame/20.0f);
+        }else {
+            batch.setColor(1f,1f,1f, (frames-currentFrame)/20.0f);
+            font.setColor(1f,1f,1f,(frames-currentFrame)/20.0f);
+
+        }
         batch.begin();
         batch.draw(background,0,0);
         batch.draw(textBox, 80,10,1120,180);

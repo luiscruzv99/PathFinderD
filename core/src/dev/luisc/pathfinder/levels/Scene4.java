@@ -31,7 +31,6 @@ public class Scene4 implements RenderClass {
         cam = new MovingEntity(null,new Polygon(new float[]{0,0,0,1,1,1,1,0}),
                 new Vector2(640,360),new Vector2(0,300));
         font = new BitmapFont(Gdx.files.internal("fonts/testFont.fnt"), Gdx.files.internal("fonts/testFont.png"), false);
-        font.setColor(255,255,255,255);
         message = "However, those who escaped did it with premature\ntechnology, " +
                 "incapable of navigating the asteroid clusters\nthat plagued the outsides of the solar system.";
     }
@@ -43,7 +42,14 @@ public class Scene4 implements RenderClass {
         c.zoom = 1;
         c.update();
         batch.setProjectionMatrix(c.combined);
-        batch.setColor(1f,1f,1f, currentFrame/20.0f);
+        if(currentFrame < frames/2){
+            batch.setColor(1f,1f,1f, currentFrame/20.0f);
+            font.setColor(1f,1f,1f,currentFrame/20.0f);
+        }else {
+            batch.setColor(1f,1f,1f, (frames-currentFrame)/20.0f);
+            font.setColor(1f,1f,1f,(frames-currentFrame)/20.0f);
+
+        }
         batch.begin();
         batch.draw(background,0,0);
         batch.draw(textBox, cam.getPos().x-560,cam.getPos().y-350,1120,180);

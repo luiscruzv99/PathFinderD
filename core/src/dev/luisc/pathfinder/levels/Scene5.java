@@ -46,7 +46,6 @@ public class Scene5 implements RenderClass{
                     new Polygon(new float[]{0,0,0,1,1,1,1,0}),
                     new Vector2(-10000, 330), new Vector2(3000,0));
             font = new BitmapFont(Gdx.files.internal("fonts/testFont.fnt"), Gdx.files.internal("fonts/testFont.png"), false);
-            font.setColor(255,255,255,255);
             messages = new String[]{"Ten years later, only the most skilled pilots guide the\nrest of humanity through these hazardous zones.\nThey are vital to humanity.",
                     "You are one of them...a PathFinder."};
         }
@@ -57,7 +56,14 @@ public class Scene5 implements RenderClass{
             c.zoom = 1;
             c.update();
             batch.setProjectionMatrix(c.combined);
-            batch.setColor(1f,1f,1f, currentFrame/20.0f);
+            if(currentFrame < frames/2){
+                batch.setColor(1f,1f,1f, currentFrame/20.0f);
+                font.setColor(1f,1f,1f,currentFrame/20.0f);
+            }else {
+                batch.setColor(1f,1f,1f, (frames-currentFrame)/20.0f);
+                font.setColor(1f,1f,1f,(frames-currentFrame)/20.0f);
+
+            }
             batch.begin();
             batch.draw(background,0,0);
             batch.draw(obj2.getSprite(), obj2.getPos().x, obj2.getPos().y);

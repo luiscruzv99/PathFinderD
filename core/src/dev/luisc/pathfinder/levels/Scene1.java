@@ -36,8 +36,14 @@ public class Scene1 implements RenderClass {
     @Override
     public RenderClass render(OrthographicCamera c) {
         //In this scene I dont move the camera
-        batch.setColor(1f,1f,1f, currentFrame/20.0f);
-        font.setColor(1f,1f,1f,currentFrame/20.0f);
+        if(currentFrame < frames/2){
+            batch.setColor(1f,1f,1f, currentFrame/20.0f);
+            font.setColor(1f,1f,1f,currentFrame/20.0f);
+        }else {
+            batch.setColor(1f,1f,1f, (frames-currentFrame)/20.0f);
+            font.setColor(1f,1f,1f,(frames-currentFrame)/20.0f);
+
+        }
         batch.begin();
         batch.draw(background,0,0);
         batch.draw(textBox, 80,10,1120,180);

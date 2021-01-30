@@ -37,7 +37,6 @@ public class Scene3 implements RenderClass{
                 new Polygon(new float[]{0f,0f,0f,1f,1f,1f,1f,0f}),
                 new Vector2(300,90));
         font = new BitmapFont(Gdx.files.internal("fonts/testFont.fnt"), Gdx.files.internal("fonts/testFont.png"), false);
-        font.setColor(255,255,255,255);
         message = "...as the rest of humanity was left in a crumbling and\ndesolated planet to die.";
     }
 
@@ -47,7 +46,14 @@ public class Scene3 implements RenderClass{
     @Override
     public RenderClass render(OrthographicCamera c) {
         //In this scene I dont move the camera
-        batch.setColor(1f,1f,1f, currentFrame/20.0f);
+        if(currentFrame < frames/2){
+            batch.setColor(1f,1f,1f, currentFrame/20.0f);
+            font.setColor(1f,1f,1f,currentFrame/20.0f);
+        }else {
+            batch.setColor(1f,1f,1f, (frames-currentFrame)/20.0f);
+            font.setColor(1f,1f,1f,(frames-currentFrame)/20.0f);
+
+        }
         batch.begin();
         batch.draw(background,0,0);
         batch.draw(obj1.getSprite(), obj1.getPos().x,obj1.getPos().y, 0,0,
