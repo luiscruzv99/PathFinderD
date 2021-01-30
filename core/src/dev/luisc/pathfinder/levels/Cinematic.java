@@ -14,7 +14,7 @@ public class Cinematic implements RenderClass {
     SpriteBatch batch;
     RenderClass currentRender;
     //Game's running at 60 fps, won't change that
-
+    
     public Cinematic (){
         batch = new SpriteBatch();
         m=new Menu();

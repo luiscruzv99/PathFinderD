@@ -24,9 +24,6 @@ public class Scene4 implements RenderClass {
         cam = new MovingEntity(null,new Polygon(new float[]{0,0,0,1,1,1,1,0}),new Vector2(640,360),new Vector2(0,300));
     }
 
-
-
-
     @Override
     public RenderClass render(OrthographicCamera c) {
         //In this scene I dont move the camera
