@@ -115,7 +115,6 @@ public class Level implements RenderClass{
                 30,20,50,40,1,1,playerTest.getRotation());
 
         font.draw(batch, Integer.toString(Math.round(playerTest.getSpeedComponent())),playerTest.getPos().x+75, playerTest.getPos().y+75);
-        font.draw(batch, Integer.toString(playerTest.getBeaconsPlaced()), playerTest.getPos().x-20, playerTest.getPos().y+75);
         batch.end();
 
         debugRender();

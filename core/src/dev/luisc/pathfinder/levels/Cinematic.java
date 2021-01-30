@@ -11,17 +11,21 @@ public class Cinematic implements RenderClass {
     Scene2 scn2;
     Scene3 scn3;
     Scene4 scn4;
+    Scene5 scn5;
     SpriteBatch batch;
     RenderClass currentRender;
     //Game's running at 60 fps, won't change that
+    //TODO: FadeOut animation at the end of a scene
+    //TODO: Better timing for scene durations, specially the last one
     
     public Cinematic (){
         batch = new SpriteBatch();
         m=new Menu();
-        scn4 = new Scene4(m,480,batch);
-        scn3 = new Scene3(scn4,360,batch);
-        scn2 = new Scene2(scn3,360,batch);
-        scn1 = new Scene1(scn2, 180, batch);
+        scn5 = new Scene5(m,540,batch);
+        scn4 = new Scene4(scn5,480,batch);
+        scn3 = new Scene3(scn4,280,batch);
+        scn2 = new Scene2(scn3,280,batch);
+        scn1 = new Scene1(scn2, 220, batch);
         currentRender = scn1;
     }
 
