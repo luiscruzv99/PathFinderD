@@ -107,9 +107,8 @@ public class NavigationLevel extends Level{
                    50,50,1,1,
                     nextBeacon.getCollisionBox().getRotation());
         }
-
         batch.draw(goal.getSprite(),goal.getPos().x, goal.getPos().y, 0, 0, 50, 50, 1,1,0);
-
+        font.draw(batch, Integer.toString(playerTest.getBeaconsPlaced()), playerTest.getPos().x-20, playerTest.getPos().y+75);
         batch.end();
         phaseChanged = false;
 
