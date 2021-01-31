@@ -12,9 +12,9 @@ public class PathfinderD extends ApplicationAdapter {
 
 	NavigationLevel levelTest;
 	OrthographicCamera camera;
-	//Menu menu;
 	Cinematic c;
 	RenderClass renderObject;
+	//TODO: DOCUMENT EVERYTHING + ADD MUSIC
 
 	@Override
 	public void create () {
@@ -25,7 +25,6 @@ public class PathfinderD extends ApplicationAdapter {
 		LevelIOTEST.saveTest();
 
 		ProjectilePool.getInstance();
-		//menu = new Menu();
 		c = new Cinematic();
 		renderObject = c;
 
@@ -40,9 +39,6 @@ public class PathfinderD extends ApplicationAdapter {
 
 		Gdx.gl.glBlendFunc(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 		Gdx.gl.glDisable(GL20.GL_BLEND);
-
-		//TODO: Weird graphical glicth with camera in the phase 2 of navigation levels
-
 	}
 	
 	@Override

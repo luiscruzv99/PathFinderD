@@ -41,10 +41,10 @@ public class Scene5 implements RenderClass{
                     new Polygon(new float[]{0,0,0,1,1,1,1,0}), new Vector2(0,0));
             obj2 = new MovingEntity("cinematic/scn_5_obj_2.png",
                     new Polygon(new float[]{0,0,0,1,1,1,1,0}),
-                    new Vector2(-1000,0), new Vector2(1000, 0));
+                    new Vector2(-1500,0), new Vector2(1000, 0));
             obj3 = new MovingEntity("PD_Player_Ship.png",
                     new Polygon(new float[]{0,0,0,1,1,1,1,0}),
-                    new Vector2(-10000, 330), new Vector2(3000,0));
+                    new Vector2(-20000, 330), new Vector2(5000,0));
             font = new BitmapFont(Gdx.files.internal("fonts/testFont.fnt"), Gdx.files.internal("fonts/testFont.png"), false);
             messages = new String[]{"Ten years later, only the most skilled pilots guide the\nrest of humanity through these hazardous zones.\nThey are vital to humanity.",
                     "You are one of them...a PathFinder."};
@@ -70,9 +70,9 @@ public class Scene5 implements RenderClass{
             batch.draw(obj3.getSprite(), obj3.getPos().x, obj3.getPos().y,0,0,100,80,1,1,0);
             batch.draw(obj1.getSprite(),0,0);
             batch.draw(textBox, cam.getPos().x-560,cam.getPos().y-350,1120,180);
-            //TODO: Figure out the animation for multiple messages
-            font.draw(batch, messages[currentFrame*2/frames].substring(0, Integer.min(currentFrame/2, messages[currentFrame*2/frames].length())),
+            font.draw(batch, messages[currentFrame*9/(frames*5)].substring(0, Integer.min((currentFrame-((9*currentFrame)/(5*frames))*((5*frames)/9))/2, messages[currentFrame*9/(frames*5)].length())),
                     cam.getPos().x-535, cam.getPos().y-190);
+
             batch.end();
             currentFrame++;
             cam.setPos(new Vector2(Float.max(cam.getPos().x, obj3.getPos().x), cam.getPos().y));
