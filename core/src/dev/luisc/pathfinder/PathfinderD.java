@@ -3,6 +3,8 @@ package dev.luisc.pathfinder;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import dev.luisc.pathfinder.entities.ProjectilePool;
@@ -14,7 +16,8 @@ public class PathfinderD extends ApplicationAdapter {
 	OrthographicCamera camera;
 	Cinematic c;
 	RenderClass renderObject;
-	//TODO: DOCUMENT EVERYTHING + ADD MUSIC
+	//TODO: DOCUMENT EVERYTHING
+	static Music bgm;
 
 	@Override
 	public void create () {
@@ -32,6 +35,7 @@ public class PathfinderD extends ApplicationAdapter {
 
 	@Override
 	public void render () {
+        bgm.play();
 		Gdx.gl.glClearColor(0, 0, 0, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 
