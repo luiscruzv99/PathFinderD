@@ -3,6 +3,8 @@ package dev.luisc.pathfinder;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Music;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import dev.luisc.pathfinder.entities.ProjectilePool;
@@ -17,6 +19,7 @@ public class PathfinderD extends ApplicationAdapter {
 	Menu menu;
 
 	int state = 0;
+	static Music bgm;
 
 	@Override
 	public void create () {
@@ -28,11 +31,12 @@ public class PathfinderD extends ApplicationAdapter {
 		levelTest.postDeSerialize();
 		ProjectilePool.getInstance();
 		menu = new Menu();
-
+		bgm = Gdx.audio.newMusic(Gdx.files.internal("sounds/PathFinderTheme.mp3"));
 	}
 
 	@Override
 	public void render () {
+		bgm.play();
 		Gdx.gl.glClearColor(255, 255, 255, 1);
 		Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
 		if(state == 0)
