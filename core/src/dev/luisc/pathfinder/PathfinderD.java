@@ -30,6 +30,7 @@ public class PathfinderD extends ApplicationAdapter {
 		ProjectilePool.getInstance();
 		c = new Cinematic();
 		renderObject = c;
+		bgm = Gdx.audio.newMusic(Gdx.files.internal("sounds/PathFinderTheme.mp3"));
 
 	}
 
