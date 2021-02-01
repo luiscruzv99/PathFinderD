@@ -60,10 +60,21 @@ public class FriendlySwarm implements Swarm{
     }
 
     public Entity getBestParticle(){
-        return particles.get(particles.size()-1);
+        return bestParticle;
     }
 
     public Vector2 getObjective(){
         return objective;
+    }
+
+    public void preSerialize(){
+        for(AiEntity e: particles){
+            e.preSerialize();
+            e = null;
+        }
+        bestParticle.preSerialize();
+        bestParticle = null;
+        particles.clear();
+        particles = null;
     }
 }

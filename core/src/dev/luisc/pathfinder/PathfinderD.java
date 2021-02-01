@@ -12,7 +12,6 @@ import dev.luisc.pathfinder.levels.*;
 
 public class PathfinderD extends ApplicationAdapter {
 
-	NavigationLevel levelTest;
 	OrthographicCamera camera;
 	Cinematic c;
 	RenderClass renderObject;
@@ -25,8 +24,6 @@ public class PathfinderD extends ApplicationAdapter {
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 		camera.zoom = 1.2f;
 		camera.update();
-		LevelIOTEST.saveTest();
-
 		ProjectilePool.getInstance();
 		c = new Cinematic();
 		renderObject = c;
@@ -48,7 +45,6 @@ public class PathfinderD extends ApplicationAdapter {
 	
 	@Override
 	public void dispose () {
-		levelTest.cleanUp();
 	}
 
 }

@@ -34,7 +34,6 @@ public class NavigationLevel extends Level{
     private int timer = 0;
     private int maxBeacons = 10;
 
-
     Entity goal;
 
     /**
@@ -82,7 +81,7 @@ public class NavigationLevel extends Level{
     @Override
     public RenderClass render(OrthographicCamera c){
 
-        super.render(c);
+        RenderClass r = super.render(c);
         SpriteBatch batch = getBatch();
 
         c.update();
@@ -112,7 +111,11 @@ public class NavigationLevel extends Level{
         font.draw(batch, Integer.toString(playerTest.getBeaconsPlaced()), playerTest.getPos().x-20, playerTest.getPos().y+75);
         batch.end();
         phaseChanged = false;
-        if(endState)preSerialize();
+        if(endState){
+            VictoryMenu m = new VictoryMenu(allies.size());
+            return m;
+        }
+        if(failed) return r;
         return currentRender[endState? 1:0];
     }
 
@@ -157,14 +160,17 @@ public class NavigationLevel extends Level{
         super.preSerialize();
         goal.preSerialize();
         for (Entity e: beacons) {
-            e.preSerialize();
+            e.getSprite().getTexture().dispose();
+            e = null;
         }
         beacons.clear();
         beacons = null;
+        allySwarm.preSerialize();
         allySwarm = null;
         for(AiEntity e: allies){
             e.revive();
-            e.preSerialize();
+            e.getSprite().getTexture().dispose();
+            e = null;
         }
         allies.clear();
         allies = null;
@@ -175,7 +181,7 @@ public class NavigationLevel extends Level{
         super.postDeSerialize();
         allies = new ArrayList<>();
         for(int  i = 0; i < allyPositions.size(); i++){
-            allies.add(new AiEntity("Ai_ship.png", new Polygon(new float[]{0,20,50,0,50,40}), allyPositions.get(i).cpy(), new Vector2((float)Math.random()*100, (float)Math.random()*100)));
+            allies.add(new AiEntity("Ai_ship.png", new Polygon(new float[]{0,20,50,0,50,40}), allyPositions.get(i).cpy(), new Vector2((float)Math.random()*500, (float)Math.random()*500)));
         }
         beacons = new LinkedList<>() ;
         nextBeacon = null;

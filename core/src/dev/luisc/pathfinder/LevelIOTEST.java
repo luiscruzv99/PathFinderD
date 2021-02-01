@@ -12,21 +12,23 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class LevelIOTEST {
+    private static Level lv;
 
     public static Level loadTest(){
 
-        NavigationLevel lev = null;
+        if(lv!=null){
+            lv.reset();
+        }else {
+            try (Reader reader = new FileReader("levelTest.json")) {
+                Gson gson = new GsonBuilder().create();
+                lv = gson.fromJson(reader, NavigationLevel.class);
+                lv.postDeSerialize();
 
-        System.out.println(System.getProperty("user.home")+"\\AppData\\Roaming\\.pathfinder\\levelData\\levelTest.json");
-        try(Reader reader = new FileReader("levelTest.json")){
-            Gson gson = new GsonBuilder().create();
-            lev = gson.fromJson(reader, NavigationLevel.class);
-            lev.postDeSerialize();
-
-        }catch(IOException e){
-            System.out.println("ERROR");
+            } catch (IOException e) {
+                System.out.println("ERROR");
+            }
         }
-        return lev;
+        return lv;
     }
 
     public static void saveTest(){

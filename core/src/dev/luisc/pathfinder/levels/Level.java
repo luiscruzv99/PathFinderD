@@ -47,6 +47,7 @@ public class Level implements RenderClass{
     private ArrayList<Vector2> dumbEntitiesPositions;
 
     boolean endState; //Indicator whether the level has been completed
+    boolean failed = false;
 
     public static final float TICK_TIME = 0.01f; // Interval between ticks (Seconds)
     private Timer.Task t; //Tick system
@@ -69,7 +70,8 @@ public class Level implements RenderClass{
 
     public void reset(){
 
-
+        failed = false;
+        endState = false;
         for(int i = 0; i < deadEntities.size(); i++){
             dumbEntities.add(deadEntities.get(i));
         }
@@ -118,8 +120,8 @@ public class Level implements RenderClass{
         font.draw(batch, Integer.toString(Math.round(playerTest.getSpeedComponent())),playerTest.getPos().x+75, playerTest.getPos().y+75);
         batch.end();
 
-        debugRender();
-
+        //debugRender();
+        if(failed) return new FailMenu(this);
         return currentRender[endState? 1:0];
     }
 
@@ -178,14 +180,14 @@ public class Level implements RenderClass{
         if(!playerTest.alive()) failCondition();
     }
 
-    public void cleanUp(){batch.dispose();}
+    public void cleanUp(){preSerialize();}
 
     /**
      * Checks if the criteria for failing a level has been met and
      * changes the failState variable
      */
     private void failCondition() {
-        reset();
+        failed = true;
     }
 
     public void postDeSerialize(){
@@ -232,16 +234,18 @@ public class Level implements RenderClass{
 
     public void preSerialize(){
         background.dispose();
+        batch.dispose();
         background = null;
         for(Entity e: dumbEntities){
             e.revive();
-            e.preSerialize();
+            e.getSprite().getTexture().dispose();
+            e = null;
         }
         dumbEntities.clear();
         dumbEntities = null;
-        batch = null;
-        playerTest.preSerialize();
+        playerTest.getSprite().getTexture().dispose();
         playerTest = null;
+        renderer.dispose();
         renderer = null;
         t.cancel();
         t = null;

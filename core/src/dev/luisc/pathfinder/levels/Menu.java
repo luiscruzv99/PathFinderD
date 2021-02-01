@@ -65,7 +65,6 @@ public class Menu implements RenderClass{
             // If button 1, start playing
             if(x > 576 && x < 704 && y > 324 && y < 396) {
                 lv = LevelIOTEST.loadTest();
-                lv.postDeSerialize();
                 currentNext[1] = lv;
                 return 1;
 

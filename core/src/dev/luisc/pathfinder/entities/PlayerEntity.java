@@ -20,7 +20,7 @@ public class PlayerEntity extends MovingEntity {
     private float speedComponent; //Total speed of the player (px/s)
     private float acceleration; //Acceleration of the player (px/s^2)
 
-    public static final float MAX_SPEED = 750.0f; //Max speed of the player (px/s)
+    public static final float MAX_SPEED = 1500; //Max speed of the player (px/s)
     private int timer = 0;
     private int shut = 0;
 
@@ -69,7 +69,7 @@ public class PlayerEntity extends MovingEntity {
         if(direction && (speedComponent < MAX_SPEED))
             acceleration += MAX_SPEED / 3;
         else
-            if(speedComponent > -MAX_SPEED/1.5 )acceleration -= MAX_SPEED/4;
+            if(speedComponent > -MAX_SPEED/2 )acceleration -= MAX_SPEED/4;
 
     }
 
@@ -160,7 +160,7 @@ public class PlayerEntity extends MovingEntity {
         if(shut > 0) return;
 
         float direction = getRotation(); //Get the direction the player's facing
-        float speed = 1500; //Set a fixed speed of 1500 px/s
+        float speed = 5000; //Set a fixed speed of 1500 px/s
 
         Vector2 pos =  new Vector2(); //Create the position vector
         pos.x = getCollisionBox().getTransformedVertices()[4]+5*(float)Math.cos(Math.toRadians(direction));

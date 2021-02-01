@@ -45,13 +45,15 @@ public class Entity {
 
     public void postDeSerialize(){
         sprite = new Sprite(new Texture(spritePath));
-       sprite.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
+        sprite.getTexture().setFilter(Texture.TextureFilter.Linear, Texture.TextureFilter.Linear);
 
     }
 
     public void preSerialize(){
         if(sprite != null) sprite.getTexture().dispose();
         sprite = null;
+        collisionBox = null;
+        pos = null;
         hitPoints=FULL_HEALTH;
     }
 
