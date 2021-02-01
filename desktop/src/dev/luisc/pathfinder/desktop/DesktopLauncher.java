@@ -10,7 +10,7 @@ public class DesktopLauncher {
 		config.title="Pathfinder Type.D";
 		config.width=1280;
 		config.height=720;
-		config.resizable=false;
+		config.resizable=true;
 		new LwjglApplication(new PathfinderD(), config);
 	}
 }

@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.scenes.scene2d.ui.Button;
+import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import dev.luisc.pathfinder.LevelIOTEST;
 
 /**
@@ -16,6 +18,7 @@ public class Menu implements RenderClass{
     Texture backgorund; //Background
     Texture b1; //Button 1 (play)
     Texture b2; //Button 2 (exit)
+    ImageButton test;
     Texture banner;
     SpriteBatch batch;
 

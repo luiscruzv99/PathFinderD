@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.AI.FriendlySwarm;
+import dev.luisc.pathfinder.entities.MovingEntity;
 import dev.luisc.pathfinder.handlers.CollisionHandler;
 import dev.luisc.pathfinder.entities.AiEntity;
 import dev.luisc.pathfinder.entities.Entity;
@@ -111,8 +112,8 @@ public class NavigationLevel extends Level{
         font.draw(batch, Integer.toString(playerTest.getBeaconsPlaced()), playerTest.getPos().x-20, playerTest.getPos().y+75);
         batch.end();
         phaseChanged = false;
-
-        return this;
+        if(endState)preSerialize();
+        return currentRender[endState? 1:0];
     }
 
     @Override
@@ -248,6 +249,12 @@ public class NavigationLevel extends Level{
         super.moveAndCollide();
         if(phaseChanged && getPlayerTest() != null){
             allySwarm.move();
+            boolean finished = true;
+            Iterator<AiEntity> i = allies.iterator();
+            while(i.hasNext() && finished){
+                if(i.next().getPos().dst(goal.getPos())>100) finished = false;
+            }
+            endState = finished;
         }
         timer++;
     }
@@ -278,10 +285,6 @@ public class NavigationLevel extends Level{
         }
 
         super.aliveEntities();
-    }
-
-    public boolean isPhaseChanged(){
-        return phaseChanged;
     }
 
     public Entity getBestAlly(){

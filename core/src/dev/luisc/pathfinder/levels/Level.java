@@ -51,6 +51,7 @@ public class Level implements RenderClass{
     public static final float TICK_TIME = 0.01f; // Interval between ticks (Seconds)
     private Timer.Task t; //Tick system
     BitmapFont font; //UI of the ship (speed and position for now (debug))
+    RenderClass[] currentRender;
 
     /**
      * Populates the level with the information
@@ -119,7 +120,7 @@ public class Level implements RenderClass{
 
         debugRender();
 
-        return this;
+        return currentRender[endState? 1:0];
     }
 
     public void moveCamera(OrthographicCamera c){
@@ -225,6 +226,8 @@ public class Level implements RenderClass{
 
         InputHandler.getInstance().setLevel(this);
         InputHandler.getInstance().setPlayer(playerTest);
+
+        currentRender = new RenderClass[]{this, new Menu()};
     }
 
     public void preSerialize(){

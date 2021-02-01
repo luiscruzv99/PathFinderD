@@ -18,7 +18,7 @@ public class LevelIOTEST {
         NavigationLevel lev = null;
 
         System.out.println(System.getProperty("user.home")+"\\AppData\\Roaming\\.pathfinder\\levelData\\levelTest.json");
-        try(Reader reader = new FileReader(System.getProperty("user.home")+"\\AppData\\Roaming\\.pathfinder\\levelData\\levelTest.json")){
+        try(Reader reader = new FileReader("levelTest.json")){
             Gson gson = new GsonBuilder().create();
             lev = gson.fromJson(reader, NavigationLevel.class);
             lev.postDeSerialize();

@@ -1,6 +1,7 @@
 package dev.luisc.pathfinder.levels;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
@@ -37,6 +38,10 @@ public class Scene4 implements RenderClass {
 
     @Override
     public RenderClass render(OrthographicCamera c) {
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))
+            return renderCurrent[1];
+
         //In this scene I dont move the camera
         c.position.set(cam.getPos(),c.position.z);
         c.zoom = 1;

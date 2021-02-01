@@ -1,6 +1,7 @@
 package dev.luisc.pathfinder.levels;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.Input;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.Texture;
@@ -35,6 +36,10 @@ public class Scene1 implements RenderClass {
 
     @Override
     public RenderClass render(OrthographicCamera c) {
+
+        if(Gdx.input.isKeyJustPressed(Input.Keys.ANY_KEY))
+            return renderCurrent[1];
+
         //In this scene I dont move the camera
         if(currentFrame < frames/2){
             batch.setColor(1f,1f,1f, currentFrame/20.0f);
