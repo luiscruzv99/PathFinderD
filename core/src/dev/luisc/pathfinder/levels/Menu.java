@@ -11,29 +11,28 @@ import com.badlogic.gdx.scenes.scene2d.ui.ImageButton;
 import dev.luisc.pathfinder.LevelIOTEST;
 
 /**
- * Menu of the game
+ * Main Menu of the game
  */
 public class Menu implements RenderClass{
 
     Texture backgorund; //Background
     Texture b1; //Button 1 (play)
     Texture b2; //Button 2 (exit)
-    ImageButton test;
-    Texture banner;
+    Texture banner; //Banner of the game
     SpriteBatch batch;
 
-    Level lv;
+    Level lv; //Level to render after the menu
 
     private RenderClass[] currentNext;
 
+    /**
+     * Initializes the menu
+     */
     public Menu(){
 
         banner = new Texture("banner.png");
-        //Initialize button
         b2=new Texture("button1.png");
-        //Initialize button
         b1=new Texture("button2.png");
-        //Initialize background
         backgorund = new Texture("menu_background.png");
 
         batch = new SpriteBatch();
@@ -42,6 +41,11 @@ public class Menu implements RenderClass{
 
     }
 
+    /**
+     * Renders the menu
+     * @param c
+     * @return
+     */
     @Override
     public RenderClass render(OrthographicCamera c){
 
@@ -55,6 +59,10 @@ public class Menu implements RenderClass{
         return currentNext[listenInput()];
     }
 
+    /**
+     * Listens to the users inputs
+     * @return
+     */
     public int listenInput(){
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){

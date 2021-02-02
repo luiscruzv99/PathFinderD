@@ -2,27 +2,30 @@ package dev.luisc.pathfinder;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.Input;
 import com.badlogic.gdx.audio.Music;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import dev.luisc.pathfinder.entities.ProjectilePool;
 import dev.luisc.pathfinder.levels.*;
 
+/**
+ * Entry Point for the game
+ */
 public class PathfinderD extends ApplicationAdapter {
 
-	OrthographicCamera camera;
-	Cinematic c;
-	RenderClass renderObject;
+	OrthographicCamera camera; //Camera of the game
+	Cinematic c; //The cinematic object
+	RenderClass renderObject; //The current rendered scene, menu, level...
 	//TODO: DOCUMENT EVERYTHING
-	static Music bgm;
+	static Music bgm; //Background music
 
+	/**
+	 * Initializes the camera, the projectile pool for the player, the cinematic and the bgm
+	 */
 	@Override
 	public void create () {
 		camera = new OrthographicCamera();
 		camera.setToOrtho(false,Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
-		camera.zoom = 1.2f;
 		camera.update();
 		ProjectilePool.getInstance();
 		c = new Cinematic();
@@ -31,6 +34,9 @@ public class PathfinderD extends ApplicationAdapter {
 
 	}
 
+	/**
+	 * Invokes the render method in the currently rendered object
+	 */
 	@Override
 	public void render () {
         bgm.play();

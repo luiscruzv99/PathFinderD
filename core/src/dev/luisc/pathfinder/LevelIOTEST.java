@@ -1,6 +1,5 @@
 package dev.luisc.pathfinder;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import com.google.gson.Gson;
@@ -11,9 +10,17 @@ import dev.luisc.pathfinder.levels.NavigationLevel;
 import java.io.*;
 import java.util.ArrayList;
 
+/**
+ * Reads and writes levels from files
+ */
 public class LevelIOTEST {
-    private static Level lv;
 
+    private static Level lv; //Test Level
+
+    /**
+     * Load the testLevel for the game
+     * @return the loaded level
+     */
     public static Level loadTest(){
 
         if(lv!=null){
@@ -31,14 +38,11 @@ public class LevelIOTEST {
         return lv;
     }
 
+    /**
+     * Create the test level and save it
+     */
     public static void saveTest(){
 
-        /**
-         * You cannot deserialize Texture objects, therefore they are set to null
-         * Proposed solution: add a texturePath String in the objects, which will save
-         * the path of the texture, which will have to be loaded after the object's
-         * deserialization.
-         */
 
         ArrayList<Vector2> entities= new ArrayList<>();
         for(int i=0; i<10; i++){
@@ -50,9 +54,9 @@ public class LevelIOTEST {
         }
         NavigationLevel lev = new NavigationLevel(entities, new Vector2(1000,1000),new Polygon(new float[]{800,400,800,4600,4200,4600,4200,400}),
                 "background_v1.png",allies, new Vector2(3000,3000), 100);
-        //lev.preSerialize();
+        lev.preSerialize();
 
-        try(Writer writer = new FileWriter(System.getProperty("user.home")+"\\AppData\\Roaming\\.pathfinder\\levelData\\levelTest.json")){
+        try(Writer writer = new FileWriter("levelTest.json")){
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             gson.toJson(lev, writer);
         }catch(IOException e){

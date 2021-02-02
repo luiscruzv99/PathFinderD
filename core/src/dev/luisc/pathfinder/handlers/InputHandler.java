@@ -2,11 +2,13 @@ package dev.luisc.pathfinder.handlers;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
-import com.badlogic.gdx.LifecycleListener;
 import dev.luisc.pathfinder.entities.PlayerEntity;
 import dev.luisc.pathfinder.levels.Level;
 import dev.luisc.pathfinder.levels.NavigationLevel;
 
+/**
+ * Registers the input of the user
+ */
 public class InputHandler {
 
     private static PlayerEntity player;

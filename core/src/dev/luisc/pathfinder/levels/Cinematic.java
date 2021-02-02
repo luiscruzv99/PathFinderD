@@ -5,17 +5,23 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Intro cinematic of the game
+ */
 public class Cinematic implements RenderClass {
 
-    Menu m;
-    Scene1 scn1;
-    Scene2 scn2;
-    Scene3 scn3;
-    Scene4 scn4;
-    Scene5 scn5;
+    Menu m; //Main menu
+    Scene1 scn1; //Scene 1
+    Scene2 scn2; //Scene 2
+    Scene3 scn3; //Scene 3
+    Scene4 scn4; //Scene 4
+    Scene5 scn5; //Scene 5
     SpriteBatch batch;
     RenderClass currentRender;
-    
+
+    /**
+     * Constructs the sequence of scenes, and their duration
+     */
     public Cinematic (){
         batch = new SpriteBatch();
         m=new Menu();
@@ -27,6 +33,7 @@ public class Cinematic implements RenderClass {
         currentRender = scn1;
     }
 
+    //Renders the current scene
     @Override
     public RenderClass render(OrthographicCamera c) {
         return currentRender.render(c);

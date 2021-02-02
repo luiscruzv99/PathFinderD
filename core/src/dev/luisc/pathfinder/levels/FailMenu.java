@@ -8,30 +8,41 @@ import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 
+/**
+ * Menu to show when the player fails a Level
+ */
 public class FailMenu implements RenderClass{
 
-    private Texture bg;
-    private Texture btnRetry;
-    private Texture btnMenu;
-    private Sprite dialog;
-    private BitmapFont title;
-    private BitmapFont score;
+    private Texture bg; //Background
+    private Texture btnRetry; //Retry button
+    private Texture btnMenu; //Menu button
+    private Sprite dialog; //Dialog background
+    private BitmapFont title; //Title of the dialog
+
     private RenderClass[] renderCurrent;
     private SpriteBatch batch;
-    private Level lv;
+    private Level lv; //The current level
 
+    /**
+     * Initializes the FailMenu
+     * @param lv
+     */
     public FailMenu(Level lv){
         bg = new Texture("menu_background.png");
         dialog = new Sprite(new Texture("end_dialog.png"));
         btnMenu = new Texture("btn_menu.png");
         btnRetry = new Texture("btn_retry.png");
         title = new BitmapFont(Gdx.files.internal("fonts/font_big.fnt"), Gdx.files.internal("fonts/font_big.png"), false);
-        score = new BitmapFont(Gdx.files.internal("fonts/testFont.fnt"), Gdx.files.internal("fonts/testFont.png"), false);
         renderCurrent = new RenderClass[]{this, lv, new Menu()};
         batch = new SpriteBatch();
         this.lv = lv;
     }
 
+    /**
+     * Renders the fail menu and listens for inputs
+     * @param c
+     * @return
+     */
     @Override
     public RenderClass render(OrthographicCamera c) {
         batch.begin();
@@ -45,6 +56,10 @@ public class FailMenu implements RenderClass{
         return renderCurrent[listenInput()];
     }
 
+    /**
+     * Listens for inputs and returns the appropiate value
+     * @return
+     */
     public int listenInput(){
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
@@ -63,5 +78,16 @@ public class FailMenu implements RenderClass{
         }
 
         return 0;
+    }
+
+    /**
+     * Deconstructs the menu
+     */
+    public void dispose(){
+        batch.dispose();
+        bg.dispose();
+        btnRetry.dispose();
+        btnMenu.dispose();
+        dialog.getTexture().dispose();
     }
 }

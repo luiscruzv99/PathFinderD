@@ -10,6 +10,9 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.entities.Entity;
 
+/**
+ * Scene 3 of the cinematic
+ */
 public class Scene3 implements RenderClass{
 
     private Texture background;

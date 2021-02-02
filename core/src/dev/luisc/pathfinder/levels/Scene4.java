@@ -9,7 +9,9 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.entities.MovingEntity;
-
+/**
+ * Scene 4 of the cinematic
+ */
 public class Scene4 implements RenderClass {
 
     private Texture background;

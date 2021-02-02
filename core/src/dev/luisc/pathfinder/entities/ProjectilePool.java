@@ -5,11 +5,14 @@ import com.badlogic.gdx.math.Vector2;
 
 import java.util.Stack;
 
+/**
+ * Pool of projectiles the player can shoot
+ */
 public class ProjectilePool {
 
-    static final int PROJECTILE_NUMBER = 100;
-    Stack<MovingEntity> projectiles;
-    static ProjectilePool INSTANCE = null;
+    static final int PROJECTILE_NUMBER = 100; //Number of projectiles in the pool
+    Stack<MovingEntity> projectiles; //Projectiles
+    static ProjectilePool INSTANCE = null; //Instance of the pool
 
     private ProjectilePool(){
         projectiles = new Stack<>();
@@ -23,21 +26,18 @@ public class ProjectilePool {
 
     public Entity lendAsteroid(){
         if(projectiles.isEmpty()){
-            System.out.println("POOL VACIA, RELLENANDOLA");
             refill();
         }
         return projectiles.pop();
     }
 
     public void receiveAsteroid(MovingEntity asteroid){
-        //asteroid.setPos(null);
         if(projectiles.size() < PROJECTILE_NUMBER){
             asteroid.setVel(new Vector2(0,0));
             asteroid.setPos(new Vector2(0,0));
             projectiles.add(asteroid);
         }
         else {
-            System.out.println("POOL LLENA, BORRANDO ENTIDAD");
             asteroid.preSerialize(); // """DELETE""" the object if stack is full
         }
     }

@@ -1,40 +1,40 @@
 package dev.luisc.pathfinder.levels;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Camera;
 import com.badlogic.gdx.graphics.OrthographicCamera;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.AI.FriendlySwarm;
-import dev.luisc.pathfinder.entities.MovingEntity;
 import dev.luisc.pathfinder.handlers.CollisionHandler;
 import dev.luisc.pathfinder.entities.AiEntity;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.handlers.InputHandler;
-
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Queue;
 
+/**
+ * Navigation level of the game, in which a player must guide ships to the goal
+ */
 public class NavigationLevel extends Level{
 
-    private FriendlySwarm allySwarm;
-    private Queue<Entity> beacons;
-    private Entity nextBeacon;
+    private FriendlySwarm allySwarm; //The PSO object that moves the allies
+    private Queue<Entity> beacons; //Beacons for the allies to find
+    private Entity nextBeacon; //The next beacon the allies must go to
 
-    private boolean phaseChanged = false;
+    private boolean phaseChanged = false; //Determines if the allies must be moved
 
-    private ArrayList<Vector2> allyPositions;
-    private ArrayList<AiEntity> allies;
-    private ArrayList<AiEntity> deadAllies;
+    private ArrayList<Vector2> allyPositions; //Initial position of the allies
+    private ArrayList<AiEntity> allies; //The Ai allies
+    private ArrayList<AiEntity> deadAllies; //The dead allies
 
-    private int timer = 0;
-    private int maxBeacons = 10;
+    private int timer = 0; //Timer that controls the cooldown between beacon placements
+    private int maxBeacons = 10; //The limit of beacons that can be placed by the player
 
-    Entity goal;
+    Entity goal; //The goal that the allies must reach
 
     /**
      * Populates the level with the information
@@ -51,10 +51,12 @@ public class NavigationLevel extends Level{
         goal.preSerialize();
     }
 
+    /**
+     * Resets all of the level components (allies, beacons...)
+     */
     @Override
     public void reset(){
 
-        //Reset allies
         for(AiEntity a: deadAllies)
             allies.add(a);
 
@@ -69,7 +71,7 @@ public class NavigationLevel extends Level{
         allySwarm = new FriendlySwarm(allies);
 
         allySwarm.setObjective(goal.getPos());
-        //Reset beacons
+
         nextBeacon = null;
 
         beacons.clear();
@@ -78,6 +80,12 @@ public class NavigationLevel extends Level{
     }
 
 
+    /**
+     * Renders the level and all of its components, also determines which object to render next (the same level,
+     *  the victory menu...)
+     * @param c
+     * @return
+     */
     @Override
     public RenderClass render(OrthographicCamera c){
 
@@ -108,7 +116,7 @@ public class NavigationLevel extends Level{
                     nextBeacon.getCollisionBox().getRotation());
         }
         batch.draw(goal.getSprite(),goal.getPos().x, goal.getPos().y, 0, 0, 50, 50, 1,1,0);
-        font.draw(batch, Integer.toString(playerTest.getBeaconsPlaced()), playerTest.getPos().x-20, playerTest.getPos().y+75);
+        font.draw(batch, Integer.toString(player.getBeaconsPlaced()), player.getPos().x-20, player.getPos().y+75);
         batch.end();
         phaseChanged = false;
         if(endState){
@@ -119,23 +127,31 @@ public class NavigationLevel extends Level{
         return currentRender[endState? 1:0];
     }
 
+    /**
+     * Moves the camera in the level, to follow the Ai allies when necessary
+     * @param c
+     */
     @Override
     public void moveCamera(OrthographicCamera c){
 
         if(phaseChanged) {
-            c.position.set(getBestAlly().getPos(), 0);
+            c.position.set(allySwarm.getBestParticle().getPos(), 0);
         }else{
-            c.position.set(playerTest.getPos(), 0);
+            c.position.set(player.getPos(), 0);
 
-            if (Math.abs(playerTest.getSpeedComponent()) > playerTest.MAX_SPEED / 4 && c.zoom < 1.2) {
+            if (Math.abs(player.getSpeedComponent()) > player.MAX_SPEED / 4 && c.zoom < 1.2) {
                 c.zoom += 1.33 * Gdx.graphics.getDeltaTime();
-            } else if (Math.abs(playerTest.getSpeedComponent()) < playerTest.MAX_SPEED / 6 && c.zoom > 0.8) {
+            } else if (Math.abs(player.getSpeedComponent()) < player.MAX_SPEED / 6 && c.zoom > 0.8) {
                 c.zoom -= 0.33 * Gdx.graphics.getDeltaTime();
             }
         }
 
     }
 
+    /**
+     * Debug Renderer that shows the collisions for the level components
+     * @return
+     */
     @Override
     public ShapeRenderer debugRender(){
         renderer = super.debugRender();
@@ -155,6 +171,10 @@ public class NavigationLevel extends Level{
         renderer.end();
         return renderer;
     }
+
+    /**
+     * Disposes of the components before serializing a level
+     */
     @Override
     public void preSerialize(){
         super.preSerialize();
@@ -176,6 +196,9 @@ public class NavigationLevel extends Level{
         allies = null;
     }
 
+    /**
+     * Initializes the components after de-serializing the level
+     */
     @Override
     public void postDeSerialize(){
         super.postDeSerialize();
@@ -193,11 +216,14 @@ public class NavigationLevel extends Level{
 
     }
 
+    /**
+     * Creates a beacon object in the position of the player
+     */
     public void placeBeacon() {
 
-        if (timer > 100 && getPlayerTest().getBeaconsPlaced() < maxBeacons) {
-            beacons.offer(new Entity("Beacon.png", new Polygon(new float[]{10, 5, 10, 35, 45, 35, 45, 5}), new Vector2(getPlayerTest().getPos())));
-            getPlayerTest().placeBeacon();
+        if (timer > 100 && getPlayer().getBeaconsPlaced() < maxBeacons) {
+            beacons.offer(new Entity("Beacon.png", new Polygon(new float[]{10, 5, 10, 35, 45, 35, 45, 5}), new Vector2(getPlayer().getPos())));
+            getPlayer().placeBeacon();
             timer = 0;
         }
 
@@ -207,10 +233,13 @@ public class NavigationLevel extends Level{
         }
     }
 
+    /**
+     * Checks the collisions of the diferent components in the level
+     */
     @Override
     protected void checkCollisions(){
         super.checkCollisions();
-        if(phaseChanged && getPlayerTest() != null){
+        if(phaseChanged && getPlayer() != null){
             for(AiEntity e: allies)
                 CollisionHandler.isCollidingLevel(e, getBounds());
             for(AiEntity a: allies){
@@ -243,17 +272,20 @@ public class NavigationLevel extends Level{
             }
         }
 
-        if(playerTest.getPos().dst(goal.getPos()) < 100){
+        if(player.getPos().dst(goal.getPos()) < 100){
             phaseChanged = true;
-            playerTest.fullStop();
+            player.fullStop();
 
         }
     }
 
+    /**
+     * Moves the movable components of the level
+     */
     @Override
     protected void moveAndCollide(){
         super.moveAndCollide();
-        if(phaseChanged && getPlayerTest() != null){
+        if(phaseChanged && getPlayer() != null){
             allySwarm.move();
             boolean finished = true;
             Iterator<AiEntity> i = allies.iterator();
@@ -263,13 +295,20 @@ public class NavigationLevel extends Level{
             endState = finished;
         }
         timer++;
+        listenInputs();
     }
 
+    /**
+     * Checks the user's inputs
+     */
     @Override
     protected void listenInputs(){
         if(!phaseChanged) InputHandler.listenInputs();
     }
 
+    /**
+     * Checks the entities that are still alive
+     */
     @Override
     protected void aliveEntities(){
 
@@ -293,7 +332,4 @@ public class NavigationLevel extends Level{
         super.aliveEntities();
     }
 
-    public Entity getBestAlly(){
-        return allySwarm.getBestParticle();
-    }
 }

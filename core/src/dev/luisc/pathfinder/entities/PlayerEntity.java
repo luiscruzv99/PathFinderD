@@ -21,12 +21,12 @@ public class PlayerEntity extends MovingEntity {
     private float acceleration; //Acceleration of the player (px/s^2)
 
     public static final float MAX_SPEED = 1500; //Max speed of the player (px/s)
-    private int timer = 0;
-    private int shut = 0;
+    private int timer = 0; //Timer between boosting
+    private int shut = 0; //Timer between firing projectiles
 
-    private int beaconsPlaced = 0;
+    private int beaconsPlaced = 0; //Beacons placed by the player
 
-    private ArrayList<Entity> projectiles;
+    private ArrayList<Entity> projectiles; //Projectiles shot by the player (still alive)
 
 
     /**
@@ -98,7 +98,7 @@ public class PlayerEntity extends MovingEntity {
      */
     public void boost(){
         if(speedComponent<MAX_SPEED/8 && timer > 200 ){
-            acceleration=MAX_SPEED*250;
+            acceleration=MAX_SPEED*25;
             timer=0;
         }
     }
@@ -132,6 +132,9 @@ public class PlayerEntity extends MovingEntity {
 
     }
 
+    /**
+     * Delete projectiles that have collided with something
+     */
     public void deSpawnProjectiles(){
 
         ArrayList<Entity> dead = new ArrayList<>();
@@ -156,6 +159,9 @@ public class PlayerEntity extends MovingEntity {
         if(hitPoints>0) hitPoints--;
     }
 
+    /**
+     * Shoot a new projectile
+     */
     public void shoot(){
         if(shut > 0) return;
 
@@ -179,7 +185,7 @@ public class PlayerEntity extends MovingEntity {
         //Add to the shot projectiles
         projectiles.add(e);
         Level.playSchut();
-        shut = 50; //TODO: MAKE THIS DEPENDENT ON IN GANE TICK SYSTEM
+        shut = 50;
     }
 
     public ArrayList<Entity> getProjectiles() {
@@ -198,11 +204,17 @@ public class PlayerEntity extends MovingEntity {
         beaconsPlaced++;
     }
 
+    /**
+     * Stop the player fully
+     */
     public void fullStop(){
         acceleration = 0;
         speedComponent = 0;
     }
 
+    /**
+     * Reset the player's attributes
+     */
     public void reset(){
         rotation = 0;
         fullStop();

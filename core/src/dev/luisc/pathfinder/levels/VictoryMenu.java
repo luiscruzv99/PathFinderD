@@ -7,22 +7,26 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import dev.luisc.pathfinder.LevelIOTEST;
 
-import java.awt.*;
-
+/**
+ * Menu to show when the player completes a Navigation Level
+ */
 public class VictoryMenu implements RenderClass{
 
-    private Texture bg;
-    private Texture btnQuit;
-    private Texture btnMenu;
-    private Sprite dialog;
-    private BitmapFont title;
-    private BitmapFont score;
-    private int numShips;
+    private Texture bg; //Background
+    private Texture btnQuit; //Quit Button
+    private Texture btnMenu; //Menu Button
+    private Sprite dialog; //Dialog background
+    private BitmapFont title; //Title font
+    private BitmapFont score; //Score font
+    private int numShips; //Number of ships that made it to the end
     private RenderClass[] renderCurrent;
     private SpriteBatch batch;
 
+    /**
+     * Initializes the VictoryMenu
+     * @param numShips
+     */
     public VictoryMenu(int numShips){
         bg = new Texture("menu_background.png");
         dialog = new Sprite(new Texture("end_dialog.png"));
@@ -35,6 +39,11 @@ public class VictoryMenu implements RenderClass{
         batch = new SpriteBatch();
     }
 
+    /**
+     * Renders the victory menu and listens for inputs
+     * @param c
+     * @return
+     */
     @Override
     public RenderClass render(OrthographicCamera c) {
         batch.begin();
@@ -48,6 +57,11 @@ public class VictoryMenu implements RenderClass{
 
         return renderCurrent[listenInput()];
     }
+
+    /**
+     * Listens for inputs and returns the appropiate value
+     * @return
+     */
     public int listenInput(){
 
         if(Gdx.input.isButtonJustPressed(Input.Buttons.LEFT)){
@@ -66,6 +80,9 @@ public class VictoryMenu implements RenderClass{
         return 0;
     }
 
+    /**
+     * Deconstructs the menu
+     */
     public void dispose(){
         batch.dispose();
         bg.dispose();

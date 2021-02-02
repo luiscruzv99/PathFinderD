@@ -10,8 +10,10 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.entities.MovingEntity;
 
-import java.util.SplittableRandom;
 
+/**
+ * Scene 5 of the cinematic
+ */
 public class Scene2 implements RenderClass {
 
     private Texture background;

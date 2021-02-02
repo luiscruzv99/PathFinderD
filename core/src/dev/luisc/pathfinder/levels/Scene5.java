@@ -11,8 +11,9 @@ import com.badlogic.gdx.math.Vector2;
 import dev.luisc.pathfinder.entities.Entity;
 import dev.luisc.pathfinder.entities.MovingEntity;
 
-import java.net.Inet4Address;
-
+/**
+ * Scene 5 of the cinematic
+ */
 public class Scene5 implements RenderClass{
 
         private Texture background;

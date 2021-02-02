@@ -6,7 +6,7 @@ import com.badlogic.gdx.math.Polygon;
 import com.badlogic.gdx.math.Vector2;
 
 /**
- * Class that controls a static entity (static obstacle in-game?)
+ * Class that controls a static entity
  *
  * @author Luis
  * @version 10-11-2020
@@ -16,8 +16,8 @@ public class Entity {
     private Sprite sprite; //Sprite of the entity
     private Polygon collisionBox; //Collision box
     private Vector2 pos; //Position
-    private String spritePath;
-    private int FULL_HEALTH;
+    private String spritePath; //Path to the texture
+    private int FULL_HEALTH; //Full health of the entity
     int hitPoints=2;
 
     //Empty private constructor to prevent from doing super()
@@ -95,9 +95,5 @@ public class Entity {
 
     public void setHitPoints(int hp){
         this.hitPoints = hp;
-    }
-
-    public int getHitPoints(){
-        return hitPoints;
     }
 }
